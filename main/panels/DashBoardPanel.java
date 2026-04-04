@@ -33,6 +33,18 @@ public class DashBoardPanel extends JPanel {
         totalLabel.setFont(new Font("Arial", Font.BOLD, 30));
         totalLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
+        JPanel centerPanel = new JPanel();
+        centerPanel.setBackground(Color.WHITE);
+        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
+
+        JLabel totalText = new JLabel("TOTAL BALANCE");
+        totalText.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        totalLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        centerPanel.add(totalText);
+        centerPanel.add(Box.createRigidArea(new Dimension(0,10)));
+        centerPanel.add(totalLabel);
 
     }
 }
