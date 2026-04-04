@@ -25,5 +25,14 @@ public class DashBoardPanel extends JPanel {
         ));
 
 
+        JLabel title = new JLabel("DASHBOARD");
+        title.setFont(new Font("Arial", Font.BOLD, 22));
+
+
+        totalLabel = new JLabel("₱ 0.00");
+        totalLabel.setFont(new Font("Arial", Font.BOLD, 30));
+        totalLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+
     }
 }
