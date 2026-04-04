@@ -66,4 +66,16 @@ public class DashBoardPanel extends JPanel {
         updateTotal();
     }
 
+    private void updateTotal() {
+
+        double total = 0;
+
+        for(double value : bankTotals.values()){
+            total += value;
+        }
+
+        totalLabel.setText("₱ " + String.format("%.2f", total));
+    }
+
+
 }
