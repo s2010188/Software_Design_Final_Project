@@ -7,5 +7,6 @@ public class SingleAccountPanel extends JPanel {
 
     public SingleAccountPanel() {
 
+
     }
 }
