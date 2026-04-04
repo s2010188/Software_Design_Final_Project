@@ -15,7 +15,6 @@ public class DashBoardPanel extends JPanel {
 
         this.mainFrame = mainFrame;
 
-
         setLayout(new BorderLayout());
         setBackground(new Color(240,240,240));
 
