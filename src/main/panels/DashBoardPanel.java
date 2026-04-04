@@ -21,6 +21,8 @@ public class DashBoardPanel extends JPanel {
     public DashBoardPanel(MainFrame mainFrame) {
 
         this.mainFrame = mainFrame;
+        this.bankTotals = new HashMap<>();
+        this.bankButtons = new HashMap<>();
 
         setLayout(new BorderLayout());
         setBackground(new Color(240,240,240));
@@ -168,9 +170,21 @@ public class DashBoardPanel extends JPanel {
         }
     }
 
+    public void updateBank(String bank, double amount){
 
+        bankTotals.put(bank, amount);
+        updateTotal();
+    }
 
+    private void updateTotal(){
 
+        double total = 0;
 
+        for(double value : bankTotals.values()){
+            total += value;
+        }
+
+        totalLabel.setText("₱ " + String.format("%.2f", total));
+    }
 
 }
