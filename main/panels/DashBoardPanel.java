@@ -46,5 +46,14 @@ public class DashBoardPanel extends JPanel {
         centerPanel.add(Box.createRigidArea(new Dimension(0,10)));
         centerPanel.add(totalLabel);
 
+        cardPanel.add(title, BorderLayout.NORTH);
+        cardPanel.add(centerPanel, BorderLayout.CENTER);
+
+        JPanel wrapper = new JPanel(new GridBagLayout());
+        wrapper.setBackground(new Color(240,240,240));
+        wrapper.add(cardPanel);
+
+        add(wrapper, BorderLayout.CENTER);
     }
+
 }
