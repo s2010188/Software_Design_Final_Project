@@ -11,6 +11,9 @@ public class DashBoardPanel extends JPanel {
     private MainFrame mainFrame;
 
     private JPanel buttonPanel;
+    private JPanel dashboardButtons;
+    private JLabel totalLabel;
+
 
 
     public DashBoardPanel(MainFrame mainFrame) {
@@ -21,6 +24,7 @@ public class DashBoardPanel extends JPanel {
         setBackground(new Color(240,240,240));
 
         ButtonPanel();
+        DashboardCard();
 
     }
 
@@ -84,6 +88,55 @@ public class DashBoardPanel extends JPanel {
 
         return btn;
     }
+
+    private void DashboardCard(){
+
+        JPanel cardPanel = new JPanel();
+        cardPanel.setLayout(new BoxLayout(cardPanel, BoxLayout.Y_AXIS));
+        cardPanel.setBackground(Color.WHITE);
+        cardPanel.setPreferredSize(new Dimension(700, 350));
+
+        cardPanel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(220,220,220)),
+                BorderFactory.createEmptyBorder(30,40,30,40)
+        ));
+
+        JLabel title = new JLabel("Dashboard");
+        title.setFont(new Font("Segoe UI", Font.BOLD, 32));
+        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+
+        dashboardButtons = new JPanel(new FlowLayout(FlowLayout.CENTER,15,10));
+        dashboardButtons.setBackground(Color.WHITE);
+
+        dashboardButtons.add(Button("BDO", "bdo"));
+        dashboardButtons.add(Button("Maya", "maya"));
+        dashboardButtons.add(AddButton());
+
+        JLabel totalText = new JLabel("Total Balance");
+        totalText.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        totalText.setForeground(new Color(120,120,120));
+        totalText.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        totalLabel = new JLabel("₱ 0.00");
+        totalLabel.setFont(new Font("Segoe UI", Font.BOLD, 42));
+        totalLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        cardPanel.add(title);
+        cardPanel.add(Box.createVerticalStrut(20));
+        cardPanel.add(dashboardButtons);
+        cardPanel.add(Box.createVerticalStrut(25));
+        cardPanel.add(totalText);
+        cardPanel.add(Box.createVerticalStrut(10));
+        cardPanel.add(totalLabel);
+
+        JPanel wrapper = new JPanel(new GridBagLayout());
+        wrapper.setBackground(new Color(240,240,240));
+        wrapper.add(cardPanel);
+
+        add(wrapper, BorderLayout.CENTER);
+    }
+
 
 
 
