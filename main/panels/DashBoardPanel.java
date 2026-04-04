@@ -10,9 +10,13 @@ public class DashBoardPanel extends JPanel {
     private MainFrame mainFrame;
     private JLabel totalLabel;
 
+    private HashMap<String, Double> bankTotals;
+
+
     public DashBoardPanel(MainFrame mainFrame) {
 
         this.mainFrame = mainFrame;
+        this.bankTotals = new HashMap<>();
 
         setLayout(new BorderLayout());
         setBackground(new Color(240, 240, 240));
@@ -54,6 +58,12 @@ public class DashBoardPanel extends JPanel {
         wrapper.add(cardPanel);
 
         add(wrapper, BorderLayout.CENTER);
+    }
+
+    public void updateBank(String bank, double amount) {
+
+        bankTotals.put(bank, amount);
+        updateTotal();
     }
 
 }
