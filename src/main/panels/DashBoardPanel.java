@@ -37,5 +37,38 @@ public class DashBoardPanel extends JPanel {
 
     }
 
+    private JButton Button(String text, String panelName){
+
+        JButton btn = new JButton(text);
+        btn.setFocusPainted(false);
+        btn.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+
+        switch (text.toLowerCase()) {
+            case "bdo":
+                btn.setBackground(Color.LIGHT_GRAY);
+                btn.setForeground(Color.BLACK);
+                break;
+
+            case "maya":
+                btn.setBackground(Color.LIGHT_GRAY);
+                btn.setForeground(Color.BLACK);
+                break;
+
+            default:
+                btn.setBackground(Color.LIGHT_GRAY);
+                btn.setForeground(Color.BLACK);
+        }
+
+        btn.setBorder(BorderFactory.createEmptyBorder(10,20,10,20));
+        btn.setOpaque(true);
+
+        btn.addActionListener(e -> mainFrame.showPanel(panelName));
+
+        return btn;
+    }
+
+
 
 }
