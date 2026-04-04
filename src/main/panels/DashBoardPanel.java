@@ -14,6 +14,8 @@ public class DashBoardPanel extends JPanel {
     private JPanel dashboardButtons;
     private JLabel totalLabel;
 
+    private HashMap<String, Double> bankTotals;
+    private HashMap<String, JButton> bankButtons;
 
 
     public DashBoardPanel(MainFrame mainFrame) {
@@ -136,6 +138,36 @@ public class DashBoardPanel extends JPanel {
 
         add(wrapper, BorderLayout.CENTER);
     }
+
+    public void addBankButton(String bankName, double balance){
+
+
+        JButton newBtn = Button(bankName.toUpperCase(), bankName);
+
+
+        dashboardButtons.add(newBtn, dashboardButtons.getComponentCount() - 1);
+
+        bankButtons.put(bankName, newBtn);
+        bankTotals.put(bankName, balance);
+
+        revalidate();
+        repaint();
+    }
+
+    public void removeBankButton(String bankName){
+
+        JButton btn = bankButtons.get(bankName);
+
+        if(btn != null){
+            dashboardButtons.remove(btn);
+            bankButtons.remove(bankName);
+            bankTotals.remove(bankName);
+
+            revalidate();
+            repaint();
+        }
+    }
+
 
 
 
