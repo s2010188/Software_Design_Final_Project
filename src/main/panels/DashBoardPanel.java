@@ -31,7 +31,7 @@ public class DashBoardPanel extends JPanel {
 
         buttonPanel.add(Button("BDO", "bdo"));
         buttonPanel.add(Button("Maya", "maya"));
-        buttonPanel.add();
+        buttonPanel.add(AddButton());
 
 
 
@@ -68,6 +68,23 @@ public class DashBoardPanel extends JPanel {
 
         return btn;
     }
+
+    private JButton AddButton(){
+
+        JButton btn = new JButton("+ Add Bank");
+        btn.setFocusPainted(false);
+        btn.setBackground(new Color(100,130,100));
+        btn.setForeground(Color.WHITE);
+        btn.setFont(new Font("Segoe UI", Font.BOLD, 13));
+
+        btn.setBorder(BorderFactory.createEmptyBorder(10,20,10,20));
+        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        btn.addActionListener(e -> mainFrame.showPanel("addbank"));
+
+        return btn;
+    }
+
 
 
 
