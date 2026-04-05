@@ -66,7 +66,68 @@ public class MayaPanel extends JPanel {
         savingsLabel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
 
         JButton editSavings = createEditButton();
-        
+
+        editSavings.addActionListener(e -> {
+            String input = JOptionPane.showInputDialog("Savings");
+            if(input!= null){
+                savings= Double.parseDouble(input);
+                savingsLabel.setText("PHP " + savings);
+
+                updateTotal();
+            }
+        });
+
+        JPanel editPanelW = new JPanel(new GridBagLayout());
+        editPanelW.setBackground(Color.decode("#F5F5F5"));
+        editPanelW.add(editSavings);
+
+        savingsPanel.add(savingsLabel,BorderLayout.CENTER);
+        savingsPanel.add(editPanelW, BorderLayout.EAST);
+
+
+        //SUB ACC
+        JPanel subHeader = new JPanel(new BorderLayout());
+        subHeader.setBackground(Color.white);
+        subHeader.setMaximumSize(new Dimension(Integer.MAX_VALUE,35));
+
+        JLabel subLabel = new JLabel("SUB ACCOUNTS", SwingConstants.CENTER);
+        subLabel.setFont(new Font("Arial",Font.BOLD,16));
+
+        JButton addBtn = new JButton("+ Add Sub Account");
+        addBtn.setBackground(Color.decode("#006400"));
+        addBtn.setForeground(Color.WHITE);
+        addBtn.setFocusPainted(false);
+        addBtn.setBorder(BorderFactory.createEmptyBorder(5,10,5,10));
+
+        addBtn.addActionListener(e -> addSubAccount());
+
+        JPanel addWrap = new JPanel(new FlowLayout(FlowLayout.RIGHT,0,0));
+        addWrap.setBackground(Color.WHITE);
+        addWrap.add(addBtn);
+
+        subHeader.add(subLabel, BorderLayout.CENTER);
+        subHeader.add(addWrap, BorderLayout.EAST);
+
+        subContainer = new JPanel();
+        subContainer.setLayout(new BoxLayout(subContainer, BoxLayout.Y_AXIS));
+        subContainer.setBackground(Color.WHITE);
+
+        JScrollPane scroll= new JScrollPane(subContainer);
+        scroll.setBorder(null);
+        scroll.setPreferredSize(new Dimension(300,110));
+        scroll.setMaximumSize(new Dimension(Integer.MAX_VALUE, 130));
+
+        center.add(savingsPanel);
+        center.add(Box.createVerticalStrut(8));
+
+        center.add(subHeader);
+        center.add(Box.createVerticalStrut(5));
+        center.add(scroll);
+
+
+
+
+
 
 
 
