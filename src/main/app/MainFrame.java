@@ -65,6 +65,22 @@ public class MainFrame extends JFrame {
         add(mainContainer, BorderLayout.CENTER);
 
         setVisible(true);
+    }
+
+    private void  createHeader(){
+
+        JPanel header = new JPanel(new BorderLayout());
+        header.setPreferredSize(new Dimension(0, 120));
+        header.setBackground(82,94,84);
+        header.setBorder(BorderFactory.createEmptyBorder(20,25,20,25));
+
+        JPanel leftPanel = new JPanel();
+        leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
+        leftPanel.setOpaque(false);
+
+        JLabel welcome = new JLabel("WELCOME");
+        welcome.setFont(new Font("Arial", Font.PLAIN, 14));
+        welcome.setForeground(Color.WHITE);
 
 
     }
