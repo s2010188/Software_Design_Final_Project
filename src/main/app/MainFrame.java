@@ -49,6 +49,23 @@ public class MainFrame extends JFrame {
         AddBankPanel addBankPanel = new AddBankPanel(this);
         AboutPanel aboutPanel = new AboutPanel(this);
 
+        panels.put("dashboard", dashboardPanel);
+        panels.put("bdo", bdoPanel);
+        panels.put("maya", mayaPanel);
+        panels.put("addbank", addBankPanel);
+        panels.put("about", aboutPanel);
+
+
+        mainContainer.add(dashboardPanel, "dashboard");
+        mainContainer.add(bdoPanel, "bdo");
+        mainContainer.add(mayaPanel, "maya");
+        mainContainer.add(addBankPanel, "addbank");
+        mainContainer.add(aboutPanel, "about");
+
+        add(mainContainer, BorderLayout.CENTER);
+
+        setVisible(true);
+
 
     }
 
