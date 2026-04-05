@@ -134,7 +134,16 @@ public class MainFrame extends JFrame {
                 exit.setForeground(Color.WHITE);
             }
         });
+
+        topRow.add(about);
+        topRow.add(exit);
+
+        String date = LocalDate.now().format(
+                DateTimeFormatter.ofPattern("MM/dd/yyyy")
+        );
+
     }
+
 
 
     public static void main(String[] args) {
