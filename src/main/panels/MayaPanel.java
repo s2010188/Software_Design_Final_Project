@@ -157,18 +157,121 @@ public class MayaPanel extends JPanel {
         add(cardPanel, BorderLayout.CENTER);
     }
 
+    private JPanel createPanel(String title){
+        JPanel panel= new JPanel(new BorderLayout());
+        panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY), title, 0,0, new Font("Arial", Font.BOLD, 14)));
+
+        panel.setBackground(Color.white);
+
+        return panel;
+    }
+
+    private  JButton createEditButton() {
+        JButton btn = new JButton("Edit");
+        btn.setFont(new Font("Arial",Font.BOLD,11));
+        btn.setMargin(new Insets(3,10,3,10));
+        btn.setFocusPainted(false);
 
 
+        return btn;
+    }
+
+    private JButton createRemoveSubButton() {
+        JButton btn = new JButton("Remove");
+        btn.setBackground(new Color(180,0,0));
+        btn.setForeground(Color.WHITE);
+        btn.setFocusPainted(false);
+
+        return btn;
+    }
+
+    private JButton createRemoveBankButton() {
+        JButton btn = new JButton("Remove Bank");
+        btn.setBackground(new Color(180,0,0));
+        btn.setForeground(Color.WHITE);
+        btn.setFocusPainted(false);
+
+        return btn;
+    }
 
 
+    private void addSubAccount(){
+        String name = JOptionPane.showInputDialog("Sub Account Name");
 
+        if(name == null || name.isEmpty()) return;
 
+        String amountStr = JOptionPane.showInputDialog("Amount");
 
+        if(amountStr == null || amountStr.isEmpty()) return;
 
+        double amount = Double.parseDouble(amountStr);
 
+        subAmounts.add(amount);
 
+        JPanel row = createPanel(name);
+        row.setBackground(new Color(245,245,245));
+        row.setMaximumSize(new Dimension(Integer.MAX_VALUE,55));
 
+        JLabel amountLabel = new JLabel("PHP " + amount);
+        amountLabel.setFont(new Font("Arial",Font.BOLD,14));
 
+        subLabels.add(amountLabel);
+
+        JButton edit = createEditButton();
+        JButton remove = createRemoveSubButton();
+
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT,5,0));
+        buttonPanel.setOpaque(false);
+        edit.addActionListener(e->{
+
+            String input = JOptionPane.showInputDialog("Edit Amount");
+            if(input!=null){
+                double updated = Double.parseDouble(input);
+                int index = subLabels.indexOf(amountLabel);
+                subAmounts.set(index, updated);
+                amountLabel.setText("PHP " + updated);
+
+                updateTotal();
+            }
+
+        });
+
+        remove.addActionListener(e->{
+            int index = subLabels.indexOf(amountLabel);
+            if(index >= 0){
+                subLabels.remove(index);
+                subAmounts.remove(index);
+            }
+
+            subContainer.remove(row);
+            subContainer.revalidate();
+            subContainer.repaint();
+
+            updateTotal();
+        });
+
+        buttonPanel.add(edit);
+        buttonPanel.add(remove);
+
+        row.add(amountLabel, BorderLayout.CENTER);
+        row.add(buttonPanel, BorderLayout.EAST);
+
+        subContainer.add(row);
+        subContainer.add(Box.createVerticalStrut(5));
+
+        subContainer.revalidate();
+        subContainer.repaint();
+
+        updateTotal();
+    }
+
+    private  void updateTotal() {
+        double total = savings;
+        for(double totals: subAmounts){
+            total+= totals;
+        }
+        totalLabel.setText("PHP " + total);
+        mainFrame.updateDashboardTotal("maya", total);
 
 
     }
