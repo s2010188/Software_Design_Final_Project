@@ -23,6 +23,19 @@ public class MainFrame extends JFrame {
     private HashMap<String, JPanel> panels = new HashMap<>();
     private DashBoardPanel dashboardPanel;
 
+    public MainFrame(){
+
+        setTitle("Bank System");
+        setSize(900,600);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setIconImage(new ImageIcon(
+                getClass().getResource("/main/images/logoApp.png")
+        ).getImage());
+
+        setLayout(new BorderLayout());
+
+    }
     public static void main(String[] args) {
 
     }
