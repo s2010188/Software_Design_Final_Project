@@ -142,6 +142,20 @@ public class MainFrame extends JFrame {
                 DateTimeFormatter.ofPattern("MM/dd/yyyy")
         );
 
+        JLabel dateLabel = new JLabel(date);
+        dateLabel.setForeground(Color.WHITE);
+        dateLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
+
+        rightPanel.add(topRow, BorderLayout.NORTH);
+        rightPanel.add(dateLabel, BorderLayout.SOUTH);
+
+
+        header.add(leftPanel, BorderLayout.WEST);
+        header.add(rightPanel, BorderLayout.EAST);
+
+
+        add(header, BorderLayout.NORTH);
+
     }
 
 
