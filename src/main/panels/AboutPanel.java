@@ -15,23 +15,15 @@ public class AboutPanel extends JPanel {
         setBackground(BG_COLOR);
 
 
-        JPanel header = new JPanel(new BorderLayout());
-        header.setPreferredSize(new Dimension(0,50));
-
-
-
-
         JPanel content = new JPanel();
         content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
         content.setBackground(BG_COLOR);
-        content.setBorder(BorderFactory.createEmptyBorder(20,30,20,30));
+        content.setBorder(BorderFactory.createEmptyBorder(40,60,40,60));
 
 
-
-
-        JPanel toprow = new JPanel(new BorderLayout(15,0));
+        JPanel toprow = new JPanel(new BorderLayout(40,0));
         toprow.setOpaque(false);
-        toprow.setAlignmentX(Component.LEFT_ALIGNMENT);
+        toprow.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JLabel logo;
         try {
@@ -39,19 +31,19 @@ public class AboutPanel extends JPanel {
             Image img = icon.getImage().getScaledInstance(300, 300, Image.SCALE_SMOOTH);
             logo = new JLabel(new ImageIcon(img));
         } catch (Exception e) {
-            logo = new JLabel("No Image");
+            logo = new JLabel("LOGO");
+            logo.setFont(new Font("Segoe UI",Font.BOLD,40));
         }
 
         JTextArea description = new JTextArea(
                 "This banking system is designed to help users manage and monitor\n" +
                         "their financial accounts in a simple and organized way.\n\n" +
-
                         "It allows users to track their savings and sub-accounts across\n" +
                         "different banks while automatically calculating the total balance\n" +
                         "in real time."
         );
         styleTextArea(description);
-        description.setMaximumSize(new Dimension(Integer.MAX_VALUE, description.getPreferredSize().height));
+        description.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 
         toprow.add(logo, BorderLayout.WEST);
         toprow.add(description, BorderLayout.CENTER);
@@ -62,8 +54,9 @@ public class AboutPanel extends JPanel {
         featurePanel.setOpaque(false);
         featurePanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
+
         JLabel featuretitle = new JLabel("KEY FEATURES:");
-        featuretitle.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        featuretitle.setFont(new Font("Segoe UI", Font.BOLD, 20));
         featuretitle.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         JTextArea features = new JTextArea(
@@ -75,8 +68,8 @@ public class AboutPanel extends JPanel {
                         "✔ Simple and user-friendly interface"
         );
         styleTextArea(features);
-        features.setAlignmentX(Component.LEFT_ALIGNMENT);
-        features.setMaximumSize(new Dimension(Integer.MAX_VALUE, features.getPreferredSize().height));
+        features.setFont(new Font("Segeo UI", Font.PLAIN, 20 ));
+        features.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         featurePanel.add(featuretitle);
         featurePanel.add(Box.createVerticalStrut(15));
@@ -86,10 +79,12 @@ public class AboutPanel extends JPanel {
 
         JButton backBtn = new JButton("Back");
         backBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+        backBtn.setPreferredSize(new Dimension(120,40));
+        backBtn.setMaximumSize(new Dimension(150,40));
         backBtn.setBackground(PRIMARY_COLOR);
         backBtn.setForeground(Color.WHITE);
         backBtn.setFocusPainted(false);
-        backBtn.setBorder(BorderFactory.createEmptyBorder(15,20,10,20));
+        backBtn.setFont(new Font("Segeo UI", Font.BOLD, 16));
 
         backBtn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -103,15 +98,12 @@ public class AboutPanel extends JPanel {
         backBtn.addActionListener(e -> mainFrame.showPanel("dashboard"));
 
 
-
         content.add(toprow);
-        content.add(Box.createVerticalStrut(15));
+        content.add(Box.createVerticalStrut(30));
         content.add(new JSeparator());
-        content.add(Box.createVerticalStrut(15));
-
+        content.add(Box.createVerticalStrut(30));
         content.add(featurePanel);
-        content.add(Box.createVerticalStrut(25));
-
+        content.add(Box.createVerticalStrut(30));
         content.add(backBtn);
 
 
@@ -119,13 +111,12 @@ public class AboutPanel extends JPanel {
         scrollPanel.setBorder(null);
         scrollPanel.getVerticalScrollBar().setUnitIncrement(20);
 
-        add(header, BorderLayout.NORTH);
         add(scrollPanel, BorderLayout.CENTER);
     }
 
     private void styleTextArea(JTextArea area){
         area.setEditable(false);
-        area.setFont(new Font("Segoe UI", Font.PLAIN, 15));
+        area.setFont(new Font("Segoe UI", Font.PLAIN, 20));
         area.setLineWrap(true);
         area.setWrapStyleWord(true);
         area.setOpaque(false);
