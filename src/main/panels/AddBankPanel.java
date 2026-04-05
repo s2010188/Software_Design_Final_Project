@@ -40,7 +40,46 @@ public class AddBankPanel extends JPanel {
 
 
         //logo prev
-        
+        logoPreview= new JLabel("No Logo",SwingConstants.CENTER);
+        logoPreview.setPreferredSize(new Dimension(160,70));
+        logoPreview.setMaximumSize(new Dimension(160,70));
+        logoPreview.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+        logoPreview.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+
+
+        //buttons
+        JButton chooseBtn = new JButton("Choose logo");
+        chooseBtn.setBackground(Color.decode("#000000"));
+        chooseBtn.setForeground(Color.decode("#FFFFFF"));
+        chooseBtn.setFocusPainted(false);
+        chooseBtn.setBorderPainted(false);
+        chooseBtn.setOpaque(true);
+
+        JButton addBtn= new JButton("Add Bank");
+        JButton backBtn= new JButton("Back");
+
+        chooseBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+        addBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+        backBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        chooseBtn.setMaximumSize(new Dimension(180,35));
+        addBtn.setMaximumSize(new Dimension(180, 35));
+        backBtn.setMaximumSize(new Dimension(100,28));
+
+        addBtn.setBackground(Color.decode("#5D765E"));
+        addBtn.setForeground(Color.WHITE);
+        addBtn.setFocusPainted(false);
+        addBtn.setBorderPainted(false);
+        addBtn.setOpaque(true);
+
+        chooseBtn.addActionListener(e -> chooseLogo());
+        addBtn.addActionListener(e -> addBank());
+        backBtn.addActionListener(e -> mainFrame.showPanel("dashboard"));
+
+
+
+
 
 
     }
