@@ -172,7 +172,8 @@ public class DashBoardPanel extends JPanel {
 
     public void updateBank(String bank, double amount){
 
-        bankTotals.put(bank, amount);
+        double currentAmount = bankTotals.getOrDefault(bank, 0.00);
+        bankTotals.put(bank, currentAmount + amount);
         updateTotal();
     }
 
