@@ -52,12 +52,12 @@ public class AboutPanel extends JPanel {
         JPanel featurePanel = new JPanel();
         featurePanel.setLayout(new BoxLayout(featurePanel, BoxLayout.Y_AXIS));
         featurePanel.setOpaque(false);
-        featurePanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        featurePanel.setAlignmentX(Component.RIGHT_ALIGNMENT);
 
 
         JLabel featuretitle = new JLabel("KEY FEATURES:");
         featuretitle.setFont(new Font("Segoe UI", Font.BOLD, 20));
-        featuretitle.setAlignmentX(Component.LEFT_ALIGNMENT);
+        featuretitle.setAlignmentX(Component.RIGHT_ALIGNMENT);
 
         JTextArea features = new JTextArea(
                 "✔ Real-time total balance calculation\n" +
