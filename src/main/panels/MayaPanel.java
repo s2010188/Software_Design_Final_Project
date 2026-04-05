@@ -126,6 +126,24 @@ public class MayaPanel extends JPanel {
 
 
 
+        //bottom
+        JPanel bottom = new JPanel();
+        bottom.setBackground(Color.WHITE);
+
+        JLabel totalText = new JLabel("TOTAL: ");
+        totalText.setFont(new Font("Arial",Font.BOLD,16));
+
+        totalLabel = new JLabel("PHP 0.00");
+        totalLabel.setFont(new Font("Arial",Font.BOLD,20));
+        totalLabel.setForeground(Color.decode("#006400"));
+
+
+        
+
+
+
+
+
 
 
 
