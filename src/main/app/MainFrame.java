@@ -111,6 +111,29 @@ public class MainFrame extends JFrame {
         exit.setForeground(Color.WHITE);
         exit.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
+        exit.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+
+                int confirm = JOptionPane.showConfirmDialog(
+                        null,
+                        "Are you sure you want to exit?",
+                        "Exit Confirmation",
+                        JOptionPane.YES_NO_OPTION
+                );
+
+                if(confirm == JOptionPane.YES_OPTION){
+                    System.exit(0);
+                }
+            }
+
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+                exit.setForeground(Color.RED);
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent e) {
+                exit.setForeground(Color.WHITE);
+            }
+        });
     }
 
 
