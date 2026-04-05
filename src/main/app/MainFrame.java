@@ -82,6 +82,15 @@ public class MainFrame extends JFrame {
         welcome.setFont(new Font("Arial", Font.PLAIN, 14));
         welcome.setForeground(Color.WHITE);
 
+        JLabel name = new JLabel("JUAN DELA CRUZ");
+        name.setFont(new Font("Arial", Font.BOLD, 24));
+        name.setForeground(Color.WHITE);
+
+
+        leftPanel.add(welcome);
+        leftPanel.add(Box.createRigidArea(new Dimension(0,5)));
+        leftPanel.add(name);
+
 
     }
 
