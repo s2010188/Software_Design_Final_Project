@@ -91,6 +91,25 @@ public class MainFrame extends JFrame {
         leftPanel.add(Box.createRigidArea(new Dimension(0,5)));
         leftPanel.add(name);
 
+        JPanel rightPanel = new JPanel();
+        rightPanel.setLayout(new BorderLayout());
+        rightPanel.setOpaque(false);
+
+        JPanel topRow = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 0));
+        topRow.setOpaque(false);
+
+        JLabel about = new JLabel("<html><u>About</u></html>");
+        about.setForeground(Color.WHITE);
+        about.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        about.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                showPanel("about");
+            }
+        });
+
+        JLabel exit = new JLabel("<html><u>Exit</u></html>");
+        exit.setForeground(Color.WHITE);
+        exit.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
     }
 
