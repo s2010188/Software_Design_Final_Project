@@ -35,7 +35,24 @@ public class MainFrame extends JFrame {
 
         setLayout(new BorderLayout());
 
+        cardLayout = new CardLayout();
+        mainContainer = new JPanel(cardLayout);
+
+        panels = new HashMap<>();
+
+        createHeader();
+
+        dashboardPanel = new DashBoardPanel(this);
+
+        BDOPanel bdoPanel = new BDOPanel(this);
+        MayaPanel mayaPanel = new MayaPanel(this);
+        AddBankPanel addBankPanel = new AddBankPanel(this);
+        AboutPanel aboutPanel = new AboutPanel(this);
+
+
     }
+
+
     public static void main(String[] args) {
 
     }
