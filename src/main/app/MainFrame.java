@@ -158,10 +158,62 @@ public class MainFrame extends JFrame {
 
     }
 
+    public void showPanel(String name){
+        cardLayout.show(mainContainer, name);
+    }
+
+
+    public void updateDashboardTotal(String bank, double amount){
+        dashboardPanel.updateBank(bank, amount);
+    }
+
+
+    public void addNewBank(String bankName, ImageIcon logo) {
+
+
+        DynamicBankPanel panel =
+                new DynamicBankPanel(this, bankName, logo);
+
+
+        panels.put(bankName, panel);
+        mainContainer.add(panel, bankName);
+
+
+        dashboardPanel.addBankButton(bankName,0);
+
+
+        revalidate();
+        repaint();
+    }
+
+    public void removePanel(String bankName){
+
+
+        JPanel panel = panels.get(bankName);
+
+
+        if(panel != null){
+
+
+            mainContainer.remove(panel);
+            panels.remove(bankName);
+
+
+            dashboardPanel.removeBankButton(bankName);
+
+
+            showPanel("dashboard");
+
+
+            revalidate();
+            repaint();
+        }
+    }
+
 
 
     public static void main(String[] args) {
-
+        SwingUtilities.invokeLater(() -> new MainFrame());
     }
 }
 
