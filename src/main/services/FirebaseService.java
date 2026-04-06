@@ -106,10 +106,4 @@ public class FirebaseService {
         }
     }
 
-    public static void forceTest(){
-
-        getDatabase()
-                .child("forceTest")
-                .setValueAsync("Working");
-    }
 }
