@@ -68,5 +68,45 @@ public class BDOPanel extends JPanel {
 
         JButton editSavings = createEditButton();
 
+
+        editSavings.addActionListener(e -> {
+            String input = JOptionPane.showInputDialog("Enter Savings Amount");
+
+            if (input != null && !input.isEmpty()){
+                try {
+                    savings = Double.parseDouble(input);
+                    savingsLabel.setText(String.format("₱ %,.2f", savings));
+                    updateTotal();
+                }
+
+                catch (NumberFormatException ex){
+                    JOptionPane.showMessageDialog(this, "Please enter a valid amount", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
+        JPanel editWrapper = new JPanel(new GridLayout());
+        editWrapper.setBackground(new Color(245, 245, 245));
+        editWrapper.add(editSavings);
+
+        savingsPanelEL.add(savingsLabel, BorderLayout.CENTER);
+        savingsPanelEL.add(editWrapper, BorderLayout.EAST);
+
+        JPanel subHeader = new JPanel(new BorderLayout());
+        subHeader.setBackground(Color.WHITE);
+        subHeader.setMaximumSize(new Dimension(Integer.MAX_VALUE, 35));
+
+        JLabel subLabel = new JLabel("SUB ACCOUNTS", SwingConstants.CENTER);
+        subLabel.setFont(new Font("Arial", Font.BOLD, 16));
+
+        JButton addButton = new JButton("+ Add Sub Account");
+        addButton.setBackground(new Color(0, 100, 0));
+        addButton.setForeground(Color.WHITE);
+        addButton.setFocusPainted(false);
+        addButton.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+
+        addButton.addActionListener(e -> addSubAccount());
+
+
     }
 }
