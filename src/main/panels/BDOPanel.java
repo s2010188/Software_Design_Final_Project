@@ -107,6 +107,45 @@ public class BDOPanel extends JPanel {
 
         addButton.addActionListener(e -> addSubAccount());
 
+        JPanel addWrapper = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
+        addWrapper.setBackground(Color.WHITE);
+        addWrapper.add(addButton);
 
+        subHeader.add(subLabel, BorderLayout.CENTER);
+        subHeader.add(addWrapper, BorderLayout.EAST);
+
+        subContainerEL = new JPanel();
+        subContainerEL.setLayout(new BoxLayout(subContainerEL, BoxLayout.Y_AXIS));
+        subContainerEL.setBackground(Color.WHITE);
+
+        JScrollPane scroll = new JScrollPane(subContainerEL);
+        scroll.setBorder(null);
+        scroll.setPreferredSize(new Dimension(300, 110));
+        scroll.setMaximumSize(new Dimension(Integer.MAX_VALUE, 130));
+
+        center.add(savingsPanelEL);
+        center.add(Box.createVerticalStrut(8));
+        center.add(subHeader);
+        center.add(Box.createVerticalStrut(5));
+        center.add(scroll);
+
+        JPanel bottom = new JPanel();
+        bottom.setBackground(Color.WHITE);
+
+        JLabel totalText = new JLabel("TOTAL: ");
+        totalText.setFont(new Font("Arial", Font.BOLD, 16));
+
+        totalEL = new JLabel("₱ 0.00");
+        totalEL.setFont(new Font("Arial", Font.BOLD, 20));
+        totalEL.setForeground(new Color(0, 100, 0));
+
+        JButton removeBank = createRemoveBankButton();
+
+        removeBank.addActionListener(e -> {
+            mainFrame.getDashboard().removeBankButton("bdo");
+            mainFrame.updateDashboardTotal("bdo", 0);
+            mainFrame.removePanel("bdo");
+            mainFrame.showPanel("dashboard");
+        });
     }
 }
