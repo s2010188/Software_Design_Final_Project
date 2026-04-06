@@ -190,4 +190,43 @@ public class BDOPanel extends JPanel {
 
         return btn;
     }
+
+    private JButton createRemoveBankButton() {
+        JButton button = new JButton("Remove Bank");
+        button.setBackground(new Color(180, 0, 0));
+        button.setForeground(Color.WHITE);
+        button.setFocusPainted(false);
+
+        return button;
+    }
+
+    private void addSubAccount() {
+        String name = JOptionPane.showInputDialog("Sub Account Name");
+
+        if (name == null || name.isEmpty()){
+            return;
+        }
+
+        String amountString = JOptionPane.showInputDialog("Amount");
+
+        if (amountString == null || amountString.isEmpty()){
+            return;;
+        }
+
+        try {
+            double amount = Double.parseDouble(amountString);
+
+            subAmountsEL.add(amount);
+
+            JPanel row = createPanel(name);
+            row.setBackground(new Color(245, 245, 245));
+            row.setMaximumSize(new Dimension(Integer.MAX_VALUE, 55));
+
+            JLabel amountLabel = new JLabel(String.format("₱ %,.2f", amount));
+            amountLabel.setFont(new Font("Arial", Font.BOLD, 14));
+
+            subLabelsEL.add(amountLabel);
+        }
+    }
+
 }
