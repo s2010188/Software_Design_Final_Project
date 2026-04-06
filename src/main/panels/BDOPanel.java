@@ -226,6 +226,66 @@ public class BDOPanel extends JPanel {
             amountLabel.setFont(new Font("Arial", Font.BOLD, 14));
 
             subLabelsEL.add(amountLabel);
+
+            JButton edit = createEditButton();
+            JButton remove = createRemoveSubButton();
+
+            JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 5, 0));
+            buttonPanel.setOpaque(false);
+
+            edit.addActionListener(e -> {
+                String input = JOptionPane.showInputDialog("Edit Amount");
+
+                if (input != null && !input.isEmpty()) {
+                    try {
+                        double updated = Double.parseDouble(input);
+
+                        int index = subLabelsEL.indexOf(amountLabel);
+                        subAmountsEL.set(index, updated);
+
+                        amountLabel.setText(String.format("₱ %,.2f", updated));
+
+
+                    }
+
+                    catch (NumberFormatException ex) {
+                        JOptionPane.showMessageDialog(this, "Please enter a valid amount", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            });
+
+            remove.addActionListener(e -> {
+                int index = subLabelsEL.indexOf(amountLabel);
+
+                if (index >= 0) {
+                    subLabelsEL.remove(index);
+                    subAmountsEL.remove(index);
+                }
+
+                subContainerEL.remove(row);
+                subContainerEL.revalidate();
+                subContainerEL.repaint();
+
+
+            });
+
+            buttonPanel.add(edit);
+            buttonPanel.add(remove);
+
+            row.add(amountLabel, BorderLayout.CENTER);
+            row.add(buttonPanel, BorderLayout.EAST);
+
+            subContainerEL.add(row);
+            subContainerEL.add(Box.createVerticalStrut(5));
+
+            subContainerEL.revalidate();
+            subContainerEL.repaint();
+
+
+        }
+
+        catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Please enter a valid amount", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
