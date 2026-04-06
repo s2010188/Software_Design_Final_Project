@@ -1,7 +1,7 @@
 package main.app;
 
 import main.panels.*;
-
+//final
 import javax.swing.*;
 
 import java.awt.*;
