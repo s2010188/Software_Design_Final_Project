@@ -85,7 +85,7 @@ public class BDOPanel extends JPanel {
             }
         });
 
-        JPanel editWrapper = new JPanel(new GridLayout());
+        JPanel editWrapper = new JPanel(new GridBagLayout());
         editWrapper.setBackground(new Color(245, 245, 245));
         editWrapper.add(editSavings);
 
@@ -210,7 +210,7 @@ public class BDOPanel extends JPanel {
         String amountString = JOptionPane.showInputDialog("Amount");
 
         if (amountString == null || amountString.isEmpty()){
-            return;;
+            return;
         }
 
         try {
@@ -245,7 +245,7 @@ public class BDOPanel extends JPanel {
 
                         amountLabel.setText(String.format("₱ %,.2f", updated));
 
-
+                        updateTotal();
                     }
 
                     catch (NumberFormatException ex) {
@@ -266,7 +266,7 @@ public class BDOPanel extends JPanel {
                 subContainerEL.revalidate();
                 subContainerEL.repaint();
 
-
+                updateTotal();
             });
 
             buttonPanel.add(edit);
@@ -281,7 +281,7 @@ public class BDOPanel extends JPanel {
             subContainerEL.revalidate();
             subContainerEL.repaint();
 
-
+            updateTotal();
         }
 
         catch (NumberFormatException ex) {
@@ -289,4 +289,25 @@ public class BDOPanel extends JPanel {
         }
     }
 
+    public void updateTotal() {
+        double total = savings;
+
+        for (double v : subAmountsEL) {
+            total += v;
+        }
+
+        totalEL.setText(String.format("₱ %,.2f", total));
+
+        mainFrame.updateDashboardTotal("bdo", total);
+    }
+
+    public double getBalance() {
+        return savings;
+    }
+
+    private void setBalance(double balance) {
+        this.savings = balance;
+        savingsLabel.setText(String.format("₱ %,.2f", balance));
+        updateTotal();
+    }
 }
