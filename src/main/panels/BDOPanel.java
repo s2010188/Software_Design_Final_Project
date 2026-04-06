@@ -147,5 +147,47 @@ public class BDOPanel extends JPanel {
             mainFrame.removePanel("bdo");
             mainFrame.showPanel("dashboard");
         });
+
+        JButton back = new JButton("Back");
+        back.addActionListener(e -> mainFrame.showPanel("dashboard"));
+
+        bottom.add(totalText);
+        bottom.add(totalEL);
+        bottom.add(removeBank);
+        bottom.add(back);
+
+        eCardPanel.add(center, BorderLayout.CENTER);
+        eCardPanel.add(bottom, BorderLayout.SOUTH);
+
+        add(headerEL, BorderLayout.NORTH);
+        add(eCardPanel, BorderLayout.CENTER);
+
+    }
+
+    private JPanel createPanel(String title) {
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY), title, 0, 0, new Font("Arial", Font.BOLD, 14)));
+
+        panel.setBackground(Color.WHITE);
+
+        return panel;
+    }
+
+    private JButton createEditButton() {
+        JButton button = new JButton("Edit");
+        button.setFont(new Font("Arial", Font.BOLD, 11));
+        button.setMargin(new Insets(3, 10, 3, 10));
+        button.setFocusPainted(false);
+
+        return button;
+    }
+
+    private JButton createRemoveSubButton() {
+        JButton btn = new JButton("Remove");
+        btn.setBackground(new Color(180, 0, 0));
+        btn.setForeground(Color.WHITE);
+        btn.setFocusPainted(false);
+
+        return btn;
     }
 }
