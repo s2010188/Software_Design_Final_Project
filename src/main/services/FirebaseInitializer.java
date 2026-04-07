@@ -9,6 +9,7 @@ import com.google.firebase.FirebaseOptions;
 
 import java.io.InputStream;
 
+
 public class FirebaseInitializer {
 
     private static boolean initialized = false;
