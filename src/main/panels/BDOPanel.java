@@ -211,83 +211,58 @@ public class BDOPanel extends JPanel {
             return;
         }
 
+        double amount;
+
         try {
-            double amount = Double.parseDouble(amountString);
-
-            subAmountsEL.add(amount);
-
-            JPanel row = createPanel(name);
-            row.setBackground(new Color(245, 245, 245));
-            row.setMaximumSize(new Dimension(Integer.MAX_VALUE, 55));
-
-            JLabel amountLabel = new JLabel(String.format("₱ %,.2f", amount));
-            amountLabel.setFont(new Font("Arial", Font.BOLD, 14));
-
-            subLabelsEL.add(amountLabel);
-
-            JButton edit = createEditButton();
-            JButton remove = createRemoveSubButton();
-
-            JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 5, 0));
-            buttonPanel.setOpaque(false);
-
-            edit.addActionListener(e -> {
-                String input = JOptionPane.showInputDialog("Edit Amount");
-
-                if (input != null && !input.isEmpty()) {
-                    try {
-                        double updated = Double.parseDouble(input);
-
-                        int index = subLabelsEL.indexOf(amountLabel);
-                        subAmountsEL.set(index, updated);
-
-                        amountLabel.setText(String.format("₱ %,.2f", updated));
-
-                        updateTotal();
-                    }
-
-                    catch (NumberFormatException ex) {
-                        JOptionPane.showMessageDialog(this, "Please enter a valid amount", "Error", JOptionPane.ERROR_MESSAGE);
-                    }
-                }
-            });
-
-            remove.addActionListener(e -> {
-                int index = subLabelsEL.indexOf(amountLabel);
-
-                if (index >= 0) {
-                    subLabelsEL.remove(index);
-                    subAmountsEL.remove(index);
-                }
-
-                subContainerEL.remove(row);
-                subContainerEL.revalidate();
-                subContainerEL.repaint();
-
-                updateTotal();
-            });
-
-            buttonPanel.add(edit);
-            buttonPanel.add(remove);
-
-            row.add(amountLabel, BorderLayout.CENTER);
-            row.add(buttonPanel, BorderLayout.EAST);
-
-            subContainerEL.add(row);
-            subContainerEL.add(Box.createVerticalStrut(5));
-
-            subContainerEL.revalidate();
-            subContainerEL.repaint();
-
-            updateTotal();
+            amount = Double.parseDouble(amountString);
         }
 
-        catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this, "Please enter a valid amount", "Error", JOptionPane.ERROR_MESSAGE);
+        catch (NumberFormatException ex){
+            JOptionPane.showMessageDialog(this, "Enter numbers only", "Invalid Input", JOptionPane.WARNING_MESSAGE);
+            return;
         }
-    }
 
-    public void updateTotal() {
+        FirebaseService.updateSubAccount("bdo", name, amount);
+
+        subAmountsEL.add(amount);
+
+        JPanel row = createPanel(name);
+        row.setBackground(new Color(245, 245, 245));
+        row.setMaximumSize(new Dimension(Integer.MAX_VALUE, 55));
+
+        JLabel amountLabel = new JLabel("PHP " + amount);
+        amountLabel.setFont(new Font("Arial", Font.BOLD, 14));
+
+        subLabelsEL.add(amountLabel);
+
+        JButton edit = createEditButton();
+        JButton remove = createRemoveSubButton();
+
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 5, 0));
+        buttonPanel.setOpaque(false);
+
+        edit.addActionListener(e -> {
+
+            String input = JOptionPane.showInputDialog("Edit Amount");
+
+            if (input != null) {
+
+                double updated;
+
+                try {
+                    updated = Double.parseDouble(input);
+                }
+
+                catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(this, "Enter numbers only", "Invalid Input", JOptionPane.WARNING_MESSAGE);
+
+                    return;
+                }
+
+            }
+        });
+
+    private void updateTotal() {
         double total = savings;
 
         for (double v : subAmountsEL) {
