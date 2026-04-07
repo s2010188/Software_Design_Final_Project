@@ -42,6 +42,7 @@ public class DynamicBankPanel extends JPanel{
                 BorderFactory.createEmptyBorder(15,15,15,15)
         ));
 
+
         JPanel TopPanel = new JPanel(new BorderLayout());
         TopPanel.setBackground(Color.WHITE);
 
