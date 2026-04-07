@@ -178,8 +178,8 @@ public class MayaPanel extends JPanel {
         cardPanel.add(center, BorderLayout.CENTER);
         cardPanel.add(bottom, BorderLayout.SOUTH);
         add(cardPanel, BorderLayout.CENTER);
-        add(header, BorderLayout.NORTH);
 
+        add(header, BorderLayout.NORTH);
     }
 
     private JPanel createPanel(String title){
