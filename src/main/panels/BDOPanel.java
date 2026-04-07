@@ -57,7 +57,7 @@ public class BDOPanel extends JPanel {
         savingsPanelEL.setPreferredSize(new Dimension(0, 110));
         savingsPanelEL.setMaximumSize(new Dimension(Integer.MAX_VALUE, 110));
 
-        savingsLabel = new JLabel("₱ 0.00");
+        savingsLabel = new JLabel("PHP 0.00");
         savingsLabel.setFont(new Font("Arial", Font.BOLD, 18));
         savingsLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
@@ -65,17 +65,20 @@ public class BDOPanel extends JPanel {
 
 
         editSavings.addActionListener(e -> {
-            String input = JOptionPane.showInputDialog("Enter Savings Amount");
+            String input = JOptionPane.showInputDialog("Savings");
 
             if (input != null && !input.isEmpty()){
                 try {
+                    double previous = savings;
                     savings = Double.parseDouble(input);
-                    savingsLabel.setText(String.format("₱ %,.2f", savings));
+                    savingsLabel.setText("PHP " + savings);
+
+                    FirebaseService.updateSavings("bdo", previous, savings);
                     updateTotal();
                 }
 
                 catch (NumberFormatException ex){
-                    JOptionPane.showMessageDialog(this, "Please enter a valid amount", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Enter numbers only.", "Invalid Input!", JOptionPane.WARNING_MESSAGE);
                 }
             }
         });
@@ -130,7 +133,7 @@ public class BDOPanel extends JPanel {
         JLabel totalText = new JLabel("TOTAL: ");
         totalText.setFont(new Font("Arial", Font.BOLD, 16));
 
-        totalEL = new JLabel("₱ 0.00");
+        totalEL = new JLabel("PHP 0.00");
         totalEL.setFont(new Font("Arial", Font.BOLD, 20));
         totalEL.setForeground(new Color(0, 100, 0));
 
