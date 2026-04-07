@@ -11,6 +11,8 @@ public class AddBankPanel extends JPanel {
     private MainFrame mainFrame;
     private JTextField bankNameField;
 
+    private JLabel logoPreview;
+
     private ImageIcon selectedLogo;
 
     public AddBankPanel(MainFrame mainFrame) {
@@ -126,7 +128,19 @@ public class AddBankPanel extends JPanel {
         }
     }
 
-    
+    private  void addBank(){
+        String bank= bankNameField.getText().trim();
+        if(bank.isEmpty()){
+            JOptionPane.showMessageDialog(this, "Enter bank name ");
+            return;
+        }
+        mainFrame.addNewBank(bank, selectedLogo);
+
+        bankNameField.setText("");
+        logoPreview.setIcon(null);
+        logoPreview.setText("No Logo");
+
+        mainFrame.showPanel("dashboard");
 
 
 
