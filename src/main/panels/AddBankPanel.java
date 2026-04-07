@@ -1,17 +1,19 @@
 package main.panels;
 
+import main.app.MainFrame;
+
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.io.File;
 
 public class AddBankPanel extends JPanel {
-    private  MainFrame mainFrame;
+    private MainFrame mainFrame;
     private JTextField bankNameField;
+
     private JLabel logoPreview;
 
     private ImageIcon selectedLogo;
-
 
     public AddBankPanel(MainFrame mainFrame) {
         this.mainFrame = mainFrame;
@@ -20,7 +22,6 @@ public class AddBankPanel extends JPanel {
         setBackground(Color.decode("#F0F0F0"));
 
 
-        //card panel
         JPanel cardPanel = new JPanel();
         cardPanel.setLayout(new BoxLayout(cardPanel, BoxLayout.Y_AXIS));
         cardPanel.setBackground(Color.WHITE);
@@ -28,37 +29,33 @@ public class AddBankPanel extends JPanel {
         cardPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(200, 200, 200)), BorderFactory.createEmptyBorder(30, 30, 30, 30)));
 
 
-        JLabel title = new JLabel("+ Add New Bank");
+        JLabel title = new JLabel("Add New Bank");
         title.setFont(new Font("Arial", Font.BOLD, 22));
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        //bank name
-        JLabel banklabel = new JLabel("Bank Name");
-        banklabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JLabel bankLabel = new JLabel("Bank Name");
+        bankLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         bankNameField = new JTextField();
         bankNameField.setMaximumSize(new Dimension(320, 35));
         bankNameField.setPreferredSize(new Dimension(320, 35));
 
-
-        //logo prev
         logoPreview = new JLabel("No Logo", SwingConstants.CENTER);
         logoPreview.setPreferredSize(new Dimension(160, 70));
         logoPreview.setMaximumSize(new Dimension(160, 70));
         logoPreview.setBorder(BorderFactory.createLineBorder(Color.GRAY));
         logoPreview.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-
-        //buttons
-        JButton chooseBtn = new JButton("Choose logo");
+        //buttonz
+        JButton chooseBtn = new JButton("Choose Logo");
         chooseBtn.setBackground(Color.decode("#000000"));
         chooseBtn.setForeground(Color.decode("#FFFFFF"));
         chooseBtn.setFocusPainted(false);
         chooseBtn.setBorderPainted(false);
         chooseBtn.setOpaque(true);
-
         JButton addBtn = new JButton("Add Bank");
         JButton backBtn = new JButton("Back");
+
 
         chooseBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
         addBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -66,6 +63,7 @@ public class AddBankPanel extends JPanel {
 
         chooseBtn.setMaximumSize(new Dimension(180, 35));
         addBtn.setMaximumSize(new Dimension(180, 35));
+
         backBtn.setMaximumSize(new Dimension(100, 28));
 
         addBtn.setBackground(Color.decode("#5D765E"));
@@ -78,15 +76,16 @@ public class AddBankPanel extends JPanel {
         addBtn.addActionListener(e -> addBank());
         backBtn.addActionListener(e -> mainFrame.showPanel("dashboard"));
 
-
+        //components
         cardPanel.add(title);
         cardPanel.add(Box.createVerticalStrut(25));
 
-        cardPanel.add(banklabel);
+        cardPanel.add(bankLabel);
         cardPanel.add(Box.createVerticalStrut(8));
 
         cardPanel.add(bankNameField);
         cardPanel.add(Box.createVerticalStrut(20));
+
 
         cardPanel.add(logoPreview);
         cardPanel.add(Box.createVerticalStrut(15));
@@ -100,50 +99,46 @@ public class AddBankPanel extends JPanel {
         cardPanel.add(backBtn);
 
 
+        //center wrap
         JPanel wrap = new JPanel(new GridBagLayout());
         wrap.setBackground(Color.decode("#F0F0F0"));
         wrap.add(cardPanel);
 
-
         add(wrap, BorderLayout.CENTER);
-
     }
 
-    private void chooseLogo() {
-        JFileChooser chooser = new JFileChooser();
-        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        chooser.setAcceptAllFileFilterUsed(true);
-        chooser.setFileHidingEnabled(false);
+    private void chooseLogo(){
+        JFileChooser choose= new JFileChooser();
+        choose.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        choose.setAcceptAllFileFilterUsed(true);
+        choose.setFileHidingEnabled(false);
 
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("Images (PNG, JPG, JPEG)",
-                "png", "jpg", "jpeg");
+        FileNameExtensionFilter filter= new FileNameExtensionFilter("Images (PNG, JPG,JPEG)", "png","jpg", "jpeg");
 
-        chooser.setFileFilter(filter);
+        choose.setFileFilter(filter);
 
-        int result = chooser.showOpenDialog(this);
-        if (result == JFileChooser.APPROVE_OPTION) {
-            File file = chooser.getSelectedFile();
+        int result =choose.showOpenDialog(this);
+
+        if(result == JFileChooser.APPROVE_OPTION){
+            File file = choose.getSelectedFile();
+
             ImageIcon icon = new ImageIcon(file.getAbsolutePath());
-
-            Image img = icon.getImage().getScaledInstance(140, 50, Image.SCALE_SMOOTH);
+            Image img = icon.getImage().getScaledInstance(140,50,Image.SCALE_SMOOTH);
 
             selectedLogo = new ImageIcon(img);
 
             logoPreview.setIcon(selectedLogo);
             logoPreview.setText("");
-
-
         }
     }
 
-    private void addBank(){
-        String bank = bankNameField.getText().trim();
+    private  void addBank(){
+        String bank= bankNameField.getText().trim();
         if(bank.isEmpty()){
-            JOptionPane.showMessageDialog(this, "Enter bank name" );
+            JOptionPane.showMessageDialog(this, "Enter bank name ");
             return;
-
         }
-        mainFrame.addNewbank(bank, selectedLogo);
+        mainFrame.addNewBank(bank, selectedLogo);
 
         bankNameField.setText("");
         logoPreview.setIcon(null);
@@ -159,6 +154,8 @@ public class AddBankPanel extends JPanel {
 
 
 
-    }
 
+
+
+    }
 }
