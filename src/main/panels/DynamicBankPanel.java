@@ -23,6 +23,7 @@ public class DynamicBankPanel extends JPanel{
     private String name;
 
 
+
     public DynamicBankPanel(MainFrame mainframe, String BankName, ImageIcon Logo){
         this.mainframe = mainframe;
         this.BankName = BankName;
