@@ -3,122 +3,159 @@ package main.panels;
 import main.app.MainFrame;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.io.File;
 
 public class AddBankPanel extends JPanel {
-
     private MainFrame mainFrame;
     private JTextField bankNameField;
-    private JTextField balanceField;
+
+    private JLabel logoPreview;
+
+    private ImageIcon selectedLogo;
 
     public AddBankPanel(MainFrame mainFrame) {
-
         this.mainFrame = mainFrame;
 
         setLayout(new BorderLayout());
-        setBackground(new Color(240,240,240));
+        setBackground(Color.decode("#F0F0F0"));
 
-        JPanel cardPanel = new JPanel(new BorderLayout());
+
+        JPanel cardPanel = new JPanel();
+        cardPanel.setLayout(new BoxLayout(cardPanel, BoxLayout.Y_AXIS));
         cardPanel.setBackground(Color.WHITE);
-        cardPanel.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(200,200,200)),
-                BorderFactory.createEmptyBorder(20,20,20,20)
-        ));
+        cardPanel.setPreferredSize(new Dimension(380, 420));
+        cardPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(200, 200, 200)), BorderFactory.createEmptyBorder(30, 30, 30, 30)));
 
-        // ===== TOP =====
-        JPanel topPanel = new JPanel(new BorderLayout());
-        topPanel.setBackground(Color.WHITE);
 
         JLabel title = new JLabel("Add New Bank");
         title.setFont(new Font("Arial", Font.BOLD, 22));
+        title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        topPanel.add(title, BorderLayout.WEST);
-
-        // ===== CENTER =====
-        JPanel centerPanel = new JPanel();
-        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
-        centerPanel.setBackground(Color.WHITE);
-        centerPanel.setBorder(BorderFactory.createEmptyBorder(20,0,20,0));
-
-        String currentDate = LocalDate.now().format(DateTimeFormatter.ofPattern("MM/dd/yyyy"));
-
-        JLabel dateLabel = new JLabel(currentDate);
-        dateLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        JLabel bankLabel = new JLabel("BANK NAME");
+        JLabel bankLabel = new JLabel("Bank Name");
         bankLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         bankNameField = new JTextField();
-        bankNameField.setMaximumSize(new Dimension(300,30));
+        bankNameField.setMaximumSize(new Dimension(320, 35));
+        bankNameField.setPreferredSize(new Dimension(320, 35));
 
-        JLabel balanceLabel = new JLabel("ACCOUNT BALANCE");
-        balanceLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        logoPreview = new JLabel("No Logo", SwingConstants.CENTER);
+        logoPreview.setPreferredSize(new Dimension(160, 70));
+        logoPreview.setMaximumSize(new Dimension(160, 70));
+        logoPreview.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+        logoPreview.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        balanceField = new JTextField("0.00");
-        balanceField.setFont(new Font("Arial", Font.BOLD, 24));
-        balanceField.setMaximumSize(new Dimension(300,40));
-        balanceField.setHorizontalAlignment(JTextField.CENTER);
+        //buttonz
+        JButton chooseBtn = new JButton("Choose Logo");
+        chooseBtn.setBackground(Color.decode("#000000"));
+        chooseBtn.setForeground(Color.decode("#FFFFFF"));
+        chooseBtn.setFocusPainted(false);
+        chooseBtn.setBorderPainted(false);
+        chooseBtn.setOpaque(true);
+        JButton addBtn = new JButton("Add Bank");
+        JButton backBtn = new JButton("Back");
 
-        centerPanel.add(dateLabel);
-        centerPanel.add(Box.createRigidArea(new Dimension(0,10)));
-        centerPanel.add(bankLabel);
-        centerPanel.add(bankNameField);
-        centerPanel.add(Box.createRigidArea(new Dimension(0,10)));
-        centerPanel.add(balanceLabel);
-        centerPanel.add(balanceField);
 
-        // ===== BOTTOM =====
-        JPanel bottomPanel = new JPanel();
-        bottomPanel.setBackground(Color.WHITE);
+        chooseBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+        addBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+        backBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JButton addBtn = new JButton("ADD BANK");
-        JButton backBtn = new JButton("BACK");
+        chooseBtn.setMaximumSize(new Dimension(180, 35));
+        addBtn.setMaximumSize(new Dimension(180, 35));
 
+        backBtn.setMaximumSize(new Dimension(100, 28));
+
+        addBtn.setBackground(Color.decode("#5D765E"));
+        addBtn.setForeground(Color.WHITE);
+        addBtn.setFocusPainted(false);
+        addBtn.setBorderPainted(false);
+        addBtn.setOpaque(true);
+
+        chooseBtn.addActionListener(e -> chooseLogo());
         addBtn.addActionListener(e -> addBank());
-
-        // CHANGE HERE
         backBtn.addActionListener(e -> mainFrame.showPanel("dashboard"));
 
-        bottomPanel.add(addBtn);
-        bottomPanel.add(backBtn);
+        //components
+        cardPanel.add(title);
+        cardPanel.add(Box.createVerticalStrut(25));
 
-        cardPanel.add(topPanel, BorderLayout.NORTH);
-        cardPanel.add(centerPanel, BorderLayout.CENTER);
-        cardPanel.add(bottomPanel, BorderLayout.SOUTH);
+        cardPanel.add(bankLabel);
+        cardPanel.add(Box.createVerticalStrut(8));
 
-        JPanel wrapper = new JPanel(new GridBagLayout());
-        wrapper.setBackground(new Color(240,240,240));
-        wrapper.add(cardPanel);
+        cardPanel.add(bankNameField);
+        cardPanel.add(Box.createVerticalStrut(20));
 
-        add(wrapper, BorderLayout.CENTER);
+
+        cardPanel.add(logoPreview);
+        cardPanel.add(Box.createVerticalStrut(15));
+
+        cardPanel.add(chooseBtn);
+        cardPanel.add(Box.createVerticalStrut(20));
+
+        cardPanel.add(addBtn);
+        cardPanel.add(Box.createVerticalStrut(15));
+
+        cardPanel.add(backBtn);
+
+
+        //center wrap
+        JPanel wrap = new JPanel(new GridBagLayout());
+        wrap.setBackground(Color.decode("#F0F0F0"));
+        wrap.add(cardPanel);
+
+        add(wrap, BorderLayout.CENTER);
     }
 
-    private void addBank() {
+    private void chooseLogo(){
+        JFileChooser choose= new JFileChooser();
+        choose.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        choose.setAcceptAllFileFilterUsed(true);
+        choose.setFileHidingEnabled(false);
 
-        try {
+        FileNameExtensionFilter filter= new FileNameExtensionFilter("Images (PNG, JPG,JPEG)", "png","jpg", "jpeg");
 
-            String bankName = bankNameField.getText().trim().toLowerCase();
-            double balance = Double.parseDouble(balanceField.getText());
+        choose.setFileFilter(filter);
 
-            if(bankName.isEmpty()){
-                JOptionPane.showMessageDialog(this,"Enter Bank Name");
-                return;
-            }
+        int result =choose.showOpenDialog(this);
 
-            // CONNECTS TO DASHBOARD
-            mainFrame.addNewBank(bankName, balance);
+        if(result == JFileChooser.APPROVE_OPTION){
+            File file = choose.getSelectedFile();
 
-            bankNameField.setText("");
-            balanceField.setText("0.00");
+            ImageIcon icon = new ImageIcon(file.getAbsolutePath());
+            Image img = icon.getImage().getScaledInstance(140,50,Image.SCALE_SMOOTH);
 
-            // RETURN TO DASHBOARD
-            mainFrame.showPanel("dashboard");
+            selectedLogo = new ImageIcon(img);
 
-        } catch (Exception e){
-            JOptionPane.showMessageDialog(this,"Invalid Input");
+            logoPreview.setIcon(selectedLogo);
+            logoPreview.setText("");
         }
+    }
+
+    private  void addBank(){
+        String bank= bankNameField.getText().trim();
+        if(bank.isEmpty()){
+            JOptionPane.showMessageDialog(this, "Enter bank name ");
+            return;
+        }
+        mainFrame.addNewBank(bank, selectedLogo);
+
+        bankNameField.setText("");
+        logoPreview.setIcon(null);
+        logoPreview.setText("No Logo");
+
+        mainFrame.showPanel("dashboard");
+
+
+
+
+
+
+
+
+
+
+
 
     }
 }
