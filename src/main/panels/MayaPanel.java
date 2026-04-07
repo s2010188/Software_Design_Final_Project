@@ -1,4 +1,4 @@
-//Final 
+//Final1.1
 package main.panels;
 
 import main.app.MainFrame;
@@ -9,7 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class MayaW extends JPanel {
+public class MayaPanel extends JPanel {
     private JLabel savingsLabel;
     private JLabel totalLabel;
 
