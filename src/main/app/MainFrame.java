@@ -51,7 +51,7 @@ public class MainFrame extends JFrame {
 
         dashboardPanel = new DashBoardPanel(this);
 
-        BDOPanel bdoPanel = new BDOPanel(this);
+        BDOPanel bdoPanel = new BDOPanel(this);cd
         MayaPanel mayaPanel = new MayaPanel(this);
         AddBankPanel addBankPanel = new AddBankPanel(this);
         AboutPanel aboutPanel = new AboutPanel(this);
