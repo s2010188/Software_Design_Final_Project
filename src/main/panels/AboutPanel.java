@@ -27,7 +27,7 @@ public class AboutPanel extends JPanel {
 
         JLabel logo;
         try {
-            ImageIcon icon = new ImageIcon(getClass().getResource("/iconlogo.png"));
+            ImageIcon icon = new ImageIcon(getClass().getResource("/main/images/logoApp.png"));
             Image img = icon.getImage().getScaledInstance(300, 300, Image.SCALE_SMOOTH);
             logo = new JLabel(new ImageIcon(img));
         } catch (Exception e) {
