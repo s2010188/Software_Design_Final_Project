@@ -81,7 +81,11 @@ public class AddBankPanel extends JPanel {
         cardPanel.add(Box.createVerticalStrut(25));
 
         cardPanel.add(bankLabel);
+        cardPanel.add(Box.createVerticalStrut(8));
+
+        cardPanel.add(bankNameField);
         cardPanel.add(Box.createVerticalStrut(20));
+
 
         cardPanel.add(logoPreview);
         cardPanel.add(Box.createVerticalStrut(15));
