@@ -143,6 +143,7 @@ public class BDOPanel extends JPanel {
             mainFrame.getDashboard().removeBankButton("bdo");
             mainFrame.updateDashboardTotal("bdo", 0);
             mainFrame.removePanel("bdo");
+            FirebaseService.removeBank("bdo");
             mainFrame.showPanel("dashboard");
         });
 
@@ -201,13 +202,13 @@ public class BDOPanel extends JPanel {
     private void addSubAccount() {
         String name = JOptionPane.showInputDialog("Sub Account Name");
 
-        if (name == null || name.isEmpty()){
+        if (name == null || name.isEmpty()) {
             return;
         }
 
         String amountString = JOptionPane.showInputDialog("Amount");
 
-        if (amountString == null || amountString.isEmpty()){
+        if (amountString == null || amountString.isEmpty()) {
             return;
         }
 
@@ -215,9 +216,7 @@ public class BDOPanel extends JPanel {
 
         try {
             amount = Double.parseDouble(amountString);
-        }
-
-        catch (NumberFormatException ex){
+        } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Enter numbers only", "Invalid Input", JOptionPane.WARNING_MESSAGE);
             return;
         }
@@ -251,16 +250,55 @@ public class BDOPanel extends JPanel {
 
                 try {
                     updated = Double.parseDouble(input);
-                }
-
-                catch (NumberFormatException ex) {
+                } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(this, "Enter numbers only", "Invalid Input", JOptionPane.WARNING_MESSAGE);
 
                     return;
                 }
 
+                int index = subLabelsEL.indexOf(amountLabel);
+                subAmountsEL.set(index, updated);
+
+                amountLabel.setText("PHP " + updated);
+
+                FirebaseService.updateSubAccount("bdo", name, updated);
+
+                updateTotal();
             }
         });
+
+        remove.addActionListener(e -> {
+            int index = subLabelsEL.indexOf(amountLabel);
+
+            if (index >= 0) {
+                subLabelsEL.remove(index);
+                subAmountsEL.remove(index);
+            }
+
+            subContainerEL.remove(row);
+            subContainerEL.revalidate();
+            subContainerEL.repaint();
+
+            FirebaseService.removeSubAccount("bdo", name);
+
+            updateTotal();
+
+        });
+
+        buttonPanel.add(edit);
+        buttonPanel.add(remove);
+
+        row.add(amountLabel, BorderLayout.CENTER);
+        row.add(buttonPanel, BorderLayout.EAST);
+
+        subContainerEL.add(row);
+        subContainerEL.add(Box.createVerticalStrut(5));
+
+        subContainerEL.revalidate();
+        subContainerEL.repaint();
+
+        updateTotal();
+    }
 
     private void updateTotal() {
         double total = savings;
@@ -269,18 +307,11 @@ public class BDOPanel extends JPanel {
             total += v;
         }
 
-        totalEL.setText(String.format("₱ %,.2f", total));
+        totalEL.setText("PHP " + total);
 
         mainFrame.updateDashboardTotal("bdo", total);
-    }
 
-    public double getBalance() {
-        return savings;
-    }
-
-    private void setBalance(double balance) {
-        this.savings = balance;
-        savingsLabel.setText(String.format("₱ %,.2f", balance));
-        updateTotal();
+        System.out.println("Uploading to Firebase...");
+        FirebaseService.updateBank("bdo", total);
     }
 }
