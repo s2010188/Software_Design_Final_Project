@@ -72,7 +72,24 @@ public class AddBankPanel extends JPanel {
         addBtn.addActionListener(e -> addBank());
         backBtn.addActionListener(e -> mainFrame.showPanel("dashboard"));
 
-        
+        //components
+        cardPanel.add(title);
+        cardPanel.add(Box.createVerticalStrut(25));
+
+        cardPanel.add(bankLabel);
+        cardPanel.add(Box.createVerticalStrut(20));
+
+        cardPanel.add(logoPreview);
+        cardPanel.add(Box.createVerticalStrut(15));
+
+        cardPanel.add(chooseBtn);
+        cardPanel.add(Box.createVerticalStrut(20));
+
+        cardPanel.add(addBtn);
+        cardPanel.add(Box.createVerticalStrut(15));
+
+        cardPanel.add(backBtn);
+
 
 
 
