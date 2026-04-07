@@ -1,5 +1,7 @@
-//final
+
 package main.panels;
+
+import main.app.MainFrame;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,7 +19,7 @@ public class MayaPanel extends JPanel {
     private JPanel subContainer;
 
     public MayaPanel(MainFrame mainframe) {
-        this.mainFrame = mainfrane;
+        this.mainFrame = mainframe;
 
         setLayout(new BorderLayout());
         setBackground(Color.decode("#6ED39A"));
