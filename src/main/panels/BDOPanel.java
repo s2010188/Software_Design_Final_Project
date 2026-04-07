@@ -1,4 +1,4 @@
-//partial update 1
+//final
 package main.panels;
 import main.app.MainFrame;
 import javax.swing.*;
