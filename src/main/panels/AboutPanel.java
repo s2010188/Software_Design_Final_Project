@@ -123,3 +123,4 @@ public class AboutPanel extends JPanel {
         area.setBorder(null);
     }
 }
+// edited 1.3
