@@ -1,4 +1,4 @@
-//final
+//Final
 package main.panels;
 
 import javax.swing.*;
