@@ -1,13 +1,16 @@
 package main.app;
 
 import main.panels.*;
-//final
+import main.services.FirebaseInitializer;
+import main.services.FirebaseService;
+
 import javax.swing.*;
 
 import java.awt.*;
 import java.util.HashMap;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+
 
 public class MainFrame extends JFrame {
 
@@ -24,6 +27,10 @@ public class MainFrame extends JFrame {
     private DashBoardPanel dashboardPanel;
 
     public MainFrame(){
+
+        FirebaseInitializer.initialize();
+        FirebaseService.testConnection();
+
 
         setTitle("Bank System");
         setSize(900,600);
@@ -71,7 +78,7 @@ public class MainFrame extends JFrame {
 
         JPanel header = new JPanel(new BorderLayout());
         header.setPreferredSize(new Dimension(0, 120));
-        header.setBackground(82,94,84);
+        header.setBackground(new Color (82,94,84));
         header.setBorder(BorderFactory.createEmptyBorder(20,25,20,25));
 
         JPanel leftPanel = new JPanel();
@@ -216,5 +223,3 @@ public class MainFrame extends JFrame {
         SwingUtilities.invokeLater(() -> new MainFrame());
     }
 }
-
-
