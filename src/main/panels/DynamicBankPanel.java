@@ -4,6 +4,7 @@ import  main.app.MainFrame;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import main.services.FirebaseService;
 
 public class DynamicBankPanel extends JPanel{
 
@@ -16,11 +17,16 @@ public class DynamicBankPanel extends JPanel{
     private JPanel subContainer;
     private String BankName;
     private ImageIcon Logo;
+    private String name;
 
-    public DynamicBankPanel(MainFrame mainframe, String BankName, ImageIcon logo){
+
+    public DynamicBankPanel(MainFrame mainframe, String BankName, ImageIcon Logo){
         this.mainframe = mainframe;
         this.BankName = BankName;
         this.Logo = Logo;
+
+
+        FirebaseService.createBank(BankName);
 
         setLayout(new BorderLayout());
         setBackground(new Color(240,240,240));
@@ -35,17 +41,24 @@ public class DynamicBankPanel extends JPanel{
         JPanel TopPanel = new JPanel(new BorderLayout());
         TopPanel.setBackground(Color.WHITE);
 
+        JPanel leftHeader = new JPanel(new FlowLayout(FlowLayout.LEFT,10,0));
+        leftHeader.setOpaque(false);
+
         JLabel LogoLabel;
 
-        if(logo != null){
+        if(Logo != null){
             LogoLabel = new JLabel(Logo);
         }else{
-            LogoLabel = new JLabel(BankName);
-            LogoLabel.setFont(new Font("Arial", Font.BOLD,22));
-
+            LogoLabel = new JLabel();
         }
 
-        TopPanel.add(LogoLabel, BorderLayout.WEST);
+        JLabel bankTitle = new JLabel(BankName);
+        bankTitle.setFont(new Font("Arial", Font.BOLD,18));
+
+        leftHeader.add(LogoLabel);
+        leftHeader.add(bankTitle);
+
+        TopPanel.add(leftHeader, BorderLayout.WEST);
 
         JPanel c = new JPanel();
         c.setLayout(new BoxLayout(c,BoxLayout.Y_AXIS));
@@ -68,9 +81,12 @@ public class DynamicBankPanel extends JPanel{
             String input = JOptionPane.showInputDialog("Savings");
             if(input!=null){
 
+                double previous = savings;
                 savings = Double.parseDouble(input);
 
                 SLabel.setText("PHP " + savings);
+
+                FirebaseService.updateSavings(BankName, previous, savings);
 
                 updateTotal();
             }
@@ -133,6 +149,7 @@ public class DynamicBankPanel extends JPanel{
             mainframe.getDashboard().removeBankButton(BankName);
             mainframe.updateDashboardTotal(BankName,0);
             mainframe.removePanel(BankName);
+            FirebaseService.removeBank(BankName);
             mainframe.showPanel("dashboard");
 
         });
@@ -219,7 +236,21 @@ public class DynamicBankPanel extends JPanel{
             return;
         }
 
-        double amount = Double.parseDouble(amountS);
+        double amount;
+
+
+        try{
+            amount = Double.parseDouble(amountS);
+        }catch(NumberFormatException ex){
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Enter numbers only",
+                    "Invalid Input",
+                    JOptionPane.WARNING_MESSAGE
+            );
+            return;
+        }
+        FirebaseService.updateSubAccount(BankName, name, amount);
         subAmounts.add(amount);
 
         JPanel row = createPanel(name);
@@ -238,15 +269,30 @@ public class DynamicBankPanel extends JPanel{
 
         edit.addActionListener(e->{
 
-            String input = JOptionPane.showInputDialog("Edit Amount");
+            String input = JOptionPane.showInputDialog("Savings");
 
-            if(input!=null){
-                double updated = Double.parseDouble(input);
-                int index = subLabels.indexOf(amountLabel);
+            if(input != null){
 
-                subAmounts.set(index, updated);
-                amountLabel.setText("PHP " + updated);
-                updateTotal();
+                try{
+
+                    double previous = savings;
+                    savings = Double.parseDouble(input);
+
+                    SLabel.setText("PHP " + savings);
+
+                    FirebaseService.updateSavings(BankName, previous, savings);
+
+                    updateTotal();
+
+                }catch(NumberFormatException ex){
+
+                    JOptionPane.showMessageDialog(
+                            this,
+                            "Enter numbers only",
+                            "Invalid Input",
+                            JOptionPane.WARNING_MESSAGE
+                    );
+                }
             }
 
 
@@ -264,7 +310,9 @@ public class DynamicBankPanel extends JPanel{
             subContainer.revalidate();
             subContainer.repaint();
 
+            FirebaseService.removeSubAccount(BankName, name);
             updateTotal();
+
         });
 
         buttonPanel.add(edit);
@@ -288,6 +336,8 @@ public class DynamicBankPanel extends JPanel{
 
         TotalLabel.setText("PHP " + total);
         mainframe.updateDashboardTotal(BankName,total);
+
+        System.out.println("Uploading to Firebase...");
+        FirebaseService.updateBank(BankName,total);
     }
 }
-

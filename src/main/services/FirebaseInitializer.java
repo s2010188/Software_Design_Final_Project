@@ -4,7 +4,7 @@ import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 
-import java.io.FileInputStream;
+import java.io.InputStream;
 
 public class FirebaseInitializer {
 
@@ -16,8 +16,14 @@ public class FirebaseInitializer {
 
         try {
 
-            FileInputStream serviceAccount =
-                    new FileInputStream("src/main/resources/serviceAccountKey.json");
+            InputStream serviceAccount =
+                    FirebaseInitializer.class
+                            .getClassLoader()
+                            .getResourceAsStream("serviceAccountKey.json");
+
+            if (serviceAccount == null) {
+                throw new RuntimeException("serviceAccountKey.json not found in resources folder");
+            }
 
             System.out.println("Service account loaded");
 
