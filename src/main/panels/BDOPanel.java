@@ -1,8 +1,10 @@
+//DATABASE INTEGRATION (partial)
 package main.panels;
 import main.app.MainFrame;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import main.services.FirebaseService;
 
 public class BDOPanel extends JPanel {
     private JLabel savingsLabel;
@@ -16,9 +18,10 @@ public class BDOPanel extends JPanel {
 
     public BDOPanel(MainFrame mainFrame) {
         this.mainFrame = mainFrame;
+        FirebaseService.createBank("bdo");
 
         setLayout(new BorderLayout());
-        setBackground(new Color(0, 51, 102));
+        setBackground(Color.decode("#6ED39A"));
 
         JPanel headerEL = new JPanel(new BorderLayout());
         headerEL.setBackground(Color.WHITE);
@@ -26,19 +29,11 @@ public class BDOPanel extends JPanel {
 
         JLabel logo = new JLabel();
 
-        try {
-            ImageIcon icon = new ImageIcon("src/main/images/bdo-logo.png");
-            Image img = icon.getImage().getScaledInstance(70, 70, Image.SCALE_SMOOTH);
-            logo.setIcon(new ImageIcon(img));
-        }
+        ImageIcon icon = new ImageIcon("src/main/images/BDO image.png");
+        Image img = icon.getImage().getScaledInstance(70, 70, Image.SCALE_SMOOTH);
+        logo.setIcon(new ImageIcon(img));
 
-        catch (Exception e) {
-            logo.setText("BDO");
-            logo.setFont(new Font("Arial", Font.BOLD, 24));
-            logo.setForeground(new Color(0, 51, 102));
-        }
-
-        JLabel title = new JLabel("BDO UNIBANK");
+        JLabel title = new JLabel("BDO");
         title.setFont(new Font("Arial", Font.BOLD, 18));
 
         JPanel leftHeaderEL = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
