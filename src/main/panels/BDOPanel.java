@@ -1,4 +1,4 @@
-//DATABASE INTEGRATION (partial)
+//partial update 1
 package main.panels;
 import main.app.MainFrame;
 import javax.swing.*;
