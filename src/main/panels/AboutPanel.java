@@ -123,4 +123,4 @@ public class AboutPanel extends JPanel {
         area.setBorder(null);
     }
 }
-// done edit
+// edited
