@@ -3,6 +3,8 @@ package main.panels;
 
 import main.app.MainFrame;
 
+import main.services.FirebaseService; // for firebase
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -20,6 +22,8 @@ public class MayaPanel extends JPanel {
 
     public MayaPanel(MainFrame mainframe) {
         this.mainFrame = mainframe;
+
+        FirebaseService.createBank("maya");
 
         setLayout(new BorderLayout());
         setBackground(Color.decode("#6ED39A"));
@@ -64,18 +68,31 @@ public class MayaPanel extends JPanel {
         savingsPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 110));
 
         savingsLabel = new JLabel("PHP 0.00");
+        savingsLabel.setFont(new Font("Araial",Font.BOLD,18));
         savingsLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         JButton editSavings = createEditButton();
 
-        editSavings.addActionListener(e -> {
+        editSavings.addActionListener(e->{
             String input = JOptionPane.showInputDialog("Savings");
-            if (input != null) {
-                savings = Double.parseDouble(input);
-                savingsLabel.setText("PHP " + savings);
 
-                updateTotal();
+            if(input != null){
+                try{
+                    double previous = savings; // ADDED
+                    savings = Double.parseDouble(input);
+
+                    savingsLabel.setText("PHP " + savings);
+                    FirebaseService.updateSavings("maya", previous, savings);
+
+                    updateTotal();
+
+                }catch(NumberFormatException ex){ // ADDED
+
+                    JOptionPane.showMessageDialog(this, "Enter numbers only", "Invalid Input", JOptionPane.WARNING_MESSAGE
+                    );
+                }
             }
+
         });
 
         JPanel editPanelW = new JPanel(new GridBagLayout());
@@ -144,6 +161,8 @@ public class MayaPanel extends JPanel {
             mainframe.getDashboard().removeBankButton("maya");
             mainframe.updateDashboardTotal("maya", 0);
             mainframe.removePanel("maya");
+
+            FirebaseService.removeBank("maya"); // removing sng bank sa firebase
             mainframe.showPanel("dashboard");
         });
 
@@ -157,6 +176,7 @@ public class MayaPanel extends JPanel {
         bottom.add(back);
 
         cardPanel.add(center, BorderLayout.CENTER);
+        cardPanel.add(bottom, BorderLayout.SOUTH);
         add(cardPanel, BorderLayout.CENTER);
     }
 
@@ -207,12 +227,26 @@ public class MayaPanel extends JPanel {
 
         if(amountStr == null || amountStr.isEmpty()) return;
 
-        double amount = Double.parseDouble(amountStr);
+        double amount;
+
+        try{
+            amount = Double.parseDouble(amountStr);
+        }catch(NumberFormatException ex){
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Enter numbers only",
+                    "Invalid Input",
+                    JOptionPane.WARNING_MESSAGE
+            );
+            return;
+        }
+
+        FirebaseService.updateSubAccount("maya", name, amount);
 
         subAmounts.add(amount);
 
         JPanel row = createPanel(name);
-        row.setBackground(new Color(245,245,245));
+        row.setBackground(Color.decode("#F5F5F5"));
         row.setMaximumSize(new Dimension(Integer.MAX_VALUE,55));
 
         JLabel amountLabel = new JLabel("PHP " + amount);
@@ -225,14 +259,31 @@ public class MayaPanel extends JPanel {
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT,5,0));
         buttonPanel.setOpaque(false);
-        edit.addActionListener(e->{
 
+
+
+        edit.addActionListener(e->{
             String input = JOptionPane.showInputDialog("Edit Amount");
+
             if(input!=null){
-                double updated = Double.parseDouble(input);
+                double updated;
+                try{
+                    updated = Double.parseDouble(input);
+                }catch(NumberFormatException ex){
+                    JOptionPane.showMessageDialog(
+                            this,
+                            "Enter numbers only",
+                            "Invalid Input",
+                            JOptionPane.WARNING_MESSAGE
+                    );
+                    return;
+                }
                 int index = subLabels.indexOf(amountLabel);
                 subAmounts.set(index, updated);
+
                 amountLabel.setText("PHP " + updated);
+
+                FirebaseService.updateSubAccount("maya", name, updated);
 
                 updateTotal();
             }
@@ -251,6 +302,8 @@ public class MayaPanel extends JPanel {
             subContainer.repaint();
 
             updateTotal();
+
+            FirebaseService.removeSubAccount("maya", name);
         });
 
         buttonPanel.add(edit);
@@ -265,6 +318,8 @@ public class MayaPanel extends JPanel {
         subContainer.revalidate();
         subContainer.repaint();
 
+
+
         updateTotal();
     }
 
@@ -275,6 +330,9 @@ public class MayaPanel extends JPanel {
         }
         totalLabel.setText("PHP " + total);
         mainFrame.updateDashboardTotal("maya", total);
+
+
+        FirebaseService.updateBank("maya",total);
 
 
     }
