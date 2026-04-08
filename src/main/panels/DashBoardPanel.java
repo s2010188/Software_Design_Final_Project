@@ -1,6 +1,7 @@
 package main.panels;
 
 import main.app.MainFrame;
+import main.services.FirebaseService;
 
 import javax.swing.*;
 import java.awt.*;
@@ -192,5 +193,7 @@ public class DashBoardPanel extends JPanel {
         }
 
         totalLabel.setText("₱ " + String.format("%.2f", total));
+
+        FirebaseService.updateGrandTotal(total);
     }
 }

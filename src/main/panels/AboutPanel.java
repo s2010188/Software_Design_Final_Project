@@ -3,6 +3,7 @@ package main.panels;
 import main.app.MainFrame;
 import javax.swing.*;
 import java.awt.*;
+import main.services.FirebaseService;
 
 public class AboutPanel extends JPanel {
 
@@ -27,9 +28,13 @@ public class AboutPanel extends JPanel {
 
         JLabel logo;
         try {
-            ImageIcon icon = new ImageIcon(getClass().getResource("/iconlogo.png"));
+            String logoPath = "src/main/images/logoApp.png";
+            FirebaseService.ourlogo(logoPath);
+
+            ImageIcon icon = new ImageIcon(logoPath);
             Image img = icon.getImage().getScaledInstance(300, 300, Image.SCALE_SMOOTH);
             logo = new JLabel(new ImageIcon(img));
+
         } catch (Exception e) {
             logo = new JLabel("LOGO");
             logo.setFont(new Font("Segoe UI",Font.BOLD,40));

@@ -24,13 +24,20 @@ public class DynamicBankPanel extends JPanel{
 
 
 
-    public DynamicBankPanel(MainFrame mainframe, String BankName, ImageIcon Logo){
+    public DynamicBankPanel(MainFrame mainframe, String BankName, String logo){
         this.mainframe = mainframe;
         this.BankName = BankName;
-        this.Logo = Logo;
 
 
-        FirebaseService.createBank(BankName);
+        if(logo != null){
+            this.Logo = new ImageIcon(logo);
+        }else{
+            this.Logo = null;
+        }
+
+        FirebaseService.createBank(BankName, logo);
+
+
 
         setLayout(new BorderLayout());
         setBackground(new Color(240,240,240));

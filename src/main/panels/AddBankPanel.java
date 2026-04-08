@@ -15,6 +15,8 @@ public class AddBankPanel extends JPanel {
 
     private ImageIcon selectedLogo;
 
+    private String logo;
+
     public AddBankPanel(MainFrame mainFrame) {
         this.mainFrame = mainFrame;
 
@@ -125,6 +127,7 @@ public class AddBankPanel extends JPanel {
             ImageIcon icon = new ImageIcon(file.getAbsolutePath());
             Image img = icon.getImage().getScaledInstance(140,50,Image.SCALE_SMOOTH);
 
+            logo = file.getAbsolutePath();
             selectedLogo = new ImageIcon(img);
 
             logoPreview.setIcon(selectedLogo);
@@ -138,7 +141,7 @@ public class AddBankPanel extends JPanel {
             JOptionPane.showMessageDialog(this, "Enter bank name ");
             return;
         }
-        mainFrame.addNewBank(bank, selectedLogo);
+        mainFrame.addNewBank(bank, logo);
 
         bankNameField.setText("");
         logoPreview.setIcon(null);
