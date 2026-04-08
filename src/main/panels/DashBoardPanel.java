@@ -57,17 +57,11 @@ public class DashBoardPanel extends JPanel {
         dashboardButtons.setBackground(Color.WHITE);
 
 
-        JButton bdoBtn = createButton("BDO", "bdo");
-        JButton mayaBtn = createButton("Maya", "maya");
+
         JButton addBtn = createAddButton();
 
 
-        bankButtons.put("bdo", bdoBtn);
-        bankButtons.put("maya", mayaBtn);
 
-
-        dashboardButtons.add(bdoBtn);
-        dashboardButtons.add(mayaBtn);
         dashboardButtons.add(addBtn);
 
 
