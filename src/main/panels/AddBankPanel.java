@@ -20,7 +20,7 @@ public class AddBankPanel extends JPanel {
         setLayout(new BorderLayout());
         setBackground(Color.decode("#F0F0F0"));
 
-        // Card panel for form
+      
         JPanel cardPanel = new JPanel();
         cardPanel.setLayout(new BoxLayout(cardPanel, BoxLayout.Y_AXIS));
         cardPanel.setBackground(Color.WHITE);
@@ -30,12 +30,11 @@ public class AddBankPanel extends JPanel {
                 BorderFactory.createEmptyBorder(30, 30, 30, 30))
         );
 
-        // Title
         JLabel title = new JLabel("Add New Bank");
         title.setFont(new Font("Arial", Font.BOLD, 22));
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        // Bank name label and field
+       
         JLabel bankLabel = new JLabel("Bank Name");
         bankLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -43,14 +42,14 @@ public class AddBankPanel extends JPanel {
         bankNameField.setMaximumSize(new Dimension(320, 35));
         bankNameField.setPreferredSize(new Dimension(320, 35));
 
-        // Logo preview
+       
         logoPreview = new JLabel("No Logo", SwingConstants.CENTER);
         logoPreview.setPreferredSize(new Dimension(160, 70));
         logoPreview.setMaximumSize(new Dimension(160, 70));
         logoPreview.setBorder(BorderFactory.createLineBorder(Color.GRAY));
         logoPreview.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        // Buttons
+   
         JButton chooseBtn = new JButton("Choose Logo");
         chooseBtn.setBackground(Color.BLACK);
         chooseBtn.setForeground(Color.WHITE);
@@ -67,7 +66,7 @@ public class AddBankPanel extends JPanel {
 
         JButton backBtn = new JButton("Back");
 
-        // Align buttons
+       
         chooseBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
         addBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
         backBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -76,12 +75,11 @@ public class AddBankPanel extends JPanel {
         addBtn.setMaximumSize(new Dimension(180, 35));
         backBtn.setMaximumSize(new Dimension(100, 28));
 
-        // Button actions
         chooseBtn.addActionListener(e -> chooseLogo());
         addBtn.addActionListener(e -> addBank());
         backBtn.addActionListener(e -> mainFrame.showPanel("dashboard"));
 
-        // Add components to card panel
+        
         cardPanel.add(title);
         cardPanel.add(Box.createVerticalStrut(25));
 
@@ -102,7 +100,7 @@ public class AddBankPanel extends JPanel {
 
         cardPanel.add(backBtn);
 
-        // Wrap card panel in center layout
+   
         JPanel wrap = new JPanel(new GridBagLayout());
         wrap.setBackground(Color.decode("#F0F0F0"));
         wrap.add(cardPanel);
@@ -167,9 +165,10 @@ public class AddBankPanel extends JPanel {
             return;
         }
 
+
         mainFrame.addNewBank(bank, logo, false);
 
-        // Reset fields
+       
         bankNameField.setText("");
         logoPreview.setIcon(null);
         logoPreview.setText("No Logo");
@@ -179,4 +178,6 @@ public class AddBankPanel extends JPanel {
 
         mainFrame.showPanel("dashboard");
     }
+
+
 }
