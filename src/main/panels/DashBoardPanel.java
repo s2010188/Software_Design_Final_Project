@@ -58,7 +58,6 @@ public class DashBoardPanel extends JPanel {
 
         JButton addBtn = createAddButton();
 
-
         dashboardButtons.add(addBtn);
 
 
