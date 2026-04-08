@@ -175,7 +175,7 @@ public class MainFrame extends JFrame {
     }
 
 
-    public void addNewBank(String bankName, ImageIcon logo) {
+    public void addNewBank(String bankName, String logo) {
 
 
         DynamicBankPanel panel =

@@ -18,7 +18,8 @@ public class BDOPanel extends JPanel {
 
     public BDOPanel(MainFrame mainFrame) {
         this.mainFrame = mainFrame;
-        FirebaseService.createBank("bdo");
+
+
 
         setLayout(new BorderLayout());
         setBackground(Color.decode("#6ED39A"));
@@ -29,7 +30,10 @@ public class BDOPanel extends JPanel {
 
         JLabel logo = new JLabel();
 
-        ImageIcon icon = new ImageIcon("src/main/images/BDO image.png");
+        String logoPath = "src/main/images/BDO image.png";
+        ImageIcon icon = new ImageIcon(logoPath);
+        FirebaseService.createBank("bdo", logoPath);
+
         Image img = icon.getImage().getScaledInstance(70, 70, Image.SCALE_SMOOTH);
         logo.setIcon(new ImageIcon(img));
 

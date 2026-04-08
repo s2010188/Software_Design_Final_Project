@@ -7,6 +7,7 @@ package main.services;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import javax.swing.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -38,7 +39,7 @@ public class FirebaseService {
     }
 
 
-    public static void createBank(String bank){
+    public static void createBank(String bank, String logo){
         try{
 
             getDatabase()
@@ -58,6 +59,12 @@ public class FirebaseService {
                     .child(bank)
                     .child("total")
                     .setValueAsync(0);
+
+            getDatabase()
+                    .child("banks")
+                    .child(bank)
+                    .child("logo")
+                    .setValueAsync(logo);
 
             System.out.println("Bank created: " + bank);
 
@@ -211,6 +218,20 @@ public class FirebaseService {
                     .setValueAsync(total);
 
             System.out.println("Uploaded grand total");
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public static void ourlogo(String logo){
+        try{
+            getDatabase()
+                    .child("system")
+                    .child("LOGO")
+                    .setValueAsync(logo);
+
+            System.out.println("Uploaded system logo");
 
         }catch(Exception e){
             e.printStackTrace();

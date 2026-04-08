@@ -23,7 +23,6 @@ public class MayaPanel extends JPanel {
     public MayaPanel(MainFrame mainframe) {
         this.mainFrame = mainframe;
 
-        FirebaseService.createBank("maya");
 
         setLayout(new BorderLayout());
         setBackground(Color.decode("#6ED39A"));
@@ -35,7 +34,11 @@ public class MayaPanel extends JPanel {
         header.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         JLabel logo = new JLabel();
-        ImageIcon icon = new ImageIcon("src/main/images/maya-logo.png");
+
+        String logoPath = "src/main/images/maya-logo.png";
+        ImageIcon icon = new ImageIcon(logoPath);
+        FirebaseService.createBank("maya", logoPath);
+
         Image img = icon.getImage().getScaledInstance(70, 70, Image.SCALE_SMOOTH);
         logo.setIcon(new ImageIcon(img));
 
