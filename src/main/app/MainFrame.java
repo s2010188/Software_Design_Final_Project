@@ -1,8 +1,12 @@
 package main.app;
 
+import com.google.firebase.database.ValueEventListener;
 import main.panels.*;
 import main.services.FirebaseInitializer;
 import main.services.FirebaseService;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+
 
 import javax.swing.*;
 
@@ -15,7 +19,7 @@ import java.time.format.DateTimeFormatter;
 public class MainFrame extends JFrame {
 
 
-    public DashBoardPanel getDashboard(){
+    public DashBoardPanel getDashboard() {
         return dashboardPanel;
     }
 
@@ -26,14 +30,14 @@ public class MainFrame extends JFrame {
     private HashMap<String, JPanel> panels = new HashMap<>();
     private DashBoardPanel dashboardPanel;
 
-    public MainFrame(){
+    public MainFrame() {
 
         FirebaseInitializer.initialize();
         FirebaseService.testConnection();
 
 
         setTitle("Bank System");
-        setSize(900,600);
+        setSize(900, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setIconImage(new ImageIcon(
@@ -71,15 +75,18 @@ public class MainFrame extends JFrame {
 
         add(mainContainer, BorderLayout.CENTER);
 
+
+        loadBanks();
+
         setVisible(true);
     }
 
-    private void  createHeader(){
+    private void createHeader() {
 
         JPanel header = new JPanel(new BorderLayout());
         header.setPreferredSize(new Dimension(0, 120));
-        header.setBackground(new Color (82,94,84));
-        header.setBorder(BorderFactory.createEmptyBorder(20,25,20,25));
+        header.setBackground(new Color(82, 94, 84));
+        header.setBorder(BorderFactory.createEmptyBorder(20, 25, 20, 25));
 
         JPanel leftPanel = new JPanel();
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
@@ -95,7 +102,7 @@ public class MainFrame extends JFrame {
 
 
         leftPanel.add(welcome);
-        leftPanel.add(Box.createRigidArea(new Dimension(0,5)));
+        leftPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         leftPanel.add(name);
 
         JPanel rightPanel = new JPanel();
@@ -128,7 +135,7 @@ public class MainFrame extends JFrame {
                         JOptionPane.YES_NO_OPTION
                 );
 
-                if(confirm == JOptionPane.YES_OPTION){
+                if (confirm == JOptionPane.YES_OPTION) {
                     System.exit(0);
                 }
             }
@@ -165,17 +172,17 @@ public class MainFrame extends JFrame {
 
     }
 
-    public void showPanel(String name){
+    public void showPanel(String name) {
         cardLayout.show(mainContainer, name);
     }
 
 
-    public void updateDashboardTotal(String bank, double amount){
+    public void updateDashboardTotal(String bank, double amount) {
         dashboardPanel.updateBank(bank, amount);
     }
 
 
-    public void addNewBank(String bankName, ImageIcon logo) {
+    public void addNewBank(String bankName, String logo) {
 
 
         DynamicBankPanel panel =
@@ -186,20 +193,20 @@ public class MainFrame extends JFrame {
         mainContainer.add(panel, bankName);
 
 
-        dashboardPanel.addBankButton(bankName,0);
+        dashboardPanel.addBankButton(bankName, 0);
 
 
         revalidate();
         repaint();
     }
 
-    public void removePanel(String bankName){
+    public void removePanel(String bankName) {
 
 
         JPanel panel = panels.get(bankName);
 
 
-        if(panel != null){
+        if (panel != null) {
 
 
             mainContainer.remove(panel);
@@ -215,6 +222,92 @@ public class MainFrame extends JFrame {
             revalidate();
             repaint();
         }
+    }
+
+    private void loadBanks(){
+
+        FirebaseService.loadBanks(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+
+                for(DataSnapshot bank : snapshot.getChildren()){
+
+                    String name = bank.getKey();
+                    String logo = bank.child("logo").getValue(String.class);
+
+                    if(!panels.containsKey(name)){
+                        addNewBank(name, logo);
+                    }
+
+                    JPanel panel = panels.get(name);
+
+                    // Load savings
+                    Object savingsObj = bank.child("savings").getValue();
+                    double savings = 0;
+
+                    if(savingsObj != null){
+                        try{
+                            savings = Double.parseDouble(savingsObj.toString());
+                        }catch(Exception e){
+                            savings = 0;
+                        }
+                    }
+
+                    if(panel instanceof DynamicBankPanel){
+                        ((DynamicBankPanel) panel).setSavings(savings);
+                    }
+
+                    if(panel instanceof BDOPanel){
+                        ((BDOPanel) panel).setSavings(savings);
+                    }
+
+                    if(panel instanceof MayaPanel){
+                        ((MayaPanel) panel).setSavings(savings);
+                    }
+
+                    // Load subaccounts
+                    DataSnapshot subs = bank.child("subAccounts");
+
+                    if(subs.exists()){
+                        for(DataSnapshot sub : subs.getChildren()){
+
+                            String subName = sub.getKey();
+                            Double amount = sub.getValue(Double.class);
+
+                            if(panel instanceof DynamicBankPanel){
+                                ((DynamicBankPanel) panel).addLoadedSub(subName, amount);
+                            }
+
+                            if(panel instanceof BDOPanel){
+                                ((BDOPanel) panel).addLoadedSub(subName, amount);
+                            }
+
+                            if(panel instanceof MayaPanel){
+                                ((MayaPanel) panel).addLoadedSub(subName, amount);
+                            }
+                        }
+                    }
+
+                    // finalize load
+                    if(panel instanceof DynamicBankPanel){
+                        ((DynamicBankPanel) panel).finalizeLoad();
+                    }
+
+                    if(panel instanceof BDOPanel){
+                        ((BDOPanel) panel).finalizeLoad();
+                    }
+
+                    if(panel instanceof MayaPanel){
+                        ((MayaPanel) panel).finalizeLoad();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                System.err.println(error.getMessage());
+            }
+        });
     }
 
 
