@@ -41,34 +41,49 @@ public class FirebaseService {
 
 
     public static void createBank(String bank, String logo){
-        try{
 
-            getDatabase()
-                    .child("banks")
-                    .child(bank)
-                    .child("created")
-                    .setValueAsync(getTimestamp());
+        DatabaseReference ref = getDatabase()
+                .child("banks")
+                .child(bank);
 
-            getDatabase()
-                    .child("banks")
-                    .child(bank);
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
 
-            getDatabase()
-                    .child("banks")
-                    .child(bank);
+            @Override
+            public void onDataChange(com.google.firebase.database.DataSnapshot snapshot) {
 
 
-            getDatabase()
-                    .child("banks")
-                    .child(bank)
-                    .child("logo")
-                    .setValueAsync(logo);
+                if(snapshot.exists()){
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "Bank already exists in database!",
+                            "Duplicate Bank",
+                            JOptionPane.WARNING_MESSAGE
+                    );
+                    System.out.println("Duplicate prevented: " + bank);
+                    return;
+                }
 
-            System.out.println("Bank created: " + bank);
 
-        }catch(Exception e){
-            e.printStackTrace();
-        }
+                try{
+                    ref.child("created").setValueAsync(getTimestamp());
+                    if (logo != null && !logo.isEmpty()) {
+                        ref.child("logo").setValueAsync(logo);
+                    }
+                    ref.child("savings").setValueAsync(0);
+                    ref.child("total").setValueAsync(0);
+
+                    System.out.println("Bank created: " + bank);
+
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onCancelled(com.google.firebase.database.DatabaseError error) {
+                System.err.println(error.getMessage());
+            }
+        });
     }
 
     public static void updateSavings(String bank, double previous, double amount){
