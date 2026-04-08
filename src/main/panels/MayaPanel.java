@@ -342,4 +342,36 @@ public class MayaPanel extends JPanel {
 
     }
 
+    public void setSavings(Double value){
+
+        if(value == null) return;
+
+        savings = value;
+        savingsLabel.setText("PHP " + savings);
+        updateTotal();
+    }
+
+    public void addLoadedSub(String name, Double amount){
+
+        if(name == null || amount == null) return;
+
+        subAmounts.add(amount);
+
+        JPanel row = createPanel(name);
+
+        JLabel amountLabel = new JLabel("PHP " + amount);
+
+        subLabels.add(amountLabel);
+
+        row.add(amountLabel, BorderLayout.CENTER);
+
+        subContainer.add(row);
+
+
+    }
+
+    public void finalizeLoad(){
+        updateTotal();
+    }
+
 }

@@ -6,6 +6,7 @@ package main.services;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import javax.swing.*;
 import java.text.SimpleDateFormat;
@@ -50,15 +51,12 @@ public class FirebaseService {
 
             getDatabase()
                     .child("banks")
-                    .child(bank)
-                    .child("savings")
-                    .setValueAsync(0);
+                    .child(bank);
 
             getDatabase()
                     .child("banks")
-                    .child(bank)
-                    .child("total")
-                    .setValueAsync(0);
+                    .child(bank);
+
 
             getDatabase()
                     .child("banks")
@@ -222,6 +220,12 @@ public class FirebaseService {
         }catch(Exception e){
             e.printStackTrace();
         }
+    }
+
+    public static void loadBanks(ValueEventListener listener){
+        getDatabase()
+                .child("banks")
+                .addListenerForSingleValueEvent(listener);
     }
 
     public static void ourlogo(String logo){
