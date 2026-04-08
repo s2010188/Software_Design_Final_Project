@@ -149,14 +149,13 @@ public class DashBoardPanel extends JPanel {
 
         JButton newBtn = createButton(bankName, bankName);
 
-
         int index = dashboardButtons.getComponentCount() - 1;
         dashboardButtons.add(newBtn, index);
 
+        String key = bankName.trim().toLowerCase();
 
-        bankButtons.put(bankName, newBtn);
-        bankName = bankName.trim().toLowerCase();
-        bankTotals.put(bankName, balance);
+        bankButtons.put(key, newBtn);
+        bankTotals.put(key, balance);
 
         updateTotal();
         revalidate();
