@@ -11,8 +11,8 @@ public class AddBankPanel extends JPanel {
     private MainFrame mainFrame;
     private JTextField bankNameField;
     private JLabel logoPreview;
-    private ImageIcon selectedLogo;
-    private String logo;
+    private ImageIcon selectedLogo = null;
+    private String logo = null;
 
     public AddBankPanel(MainFrame mainFrame) {
         this.mainFrame = mainFrame;
@@ -173,6 +173,9 @@ public class AddBankPanel extends JPanel {
         bankNameField.setText("");
         logoPreview.setIcon(null);
         logoPreview.setText("No Logo");
+
+        logo = null;
+        selectedLogo = null;
 
         mainFrame.showPanel("dashboard");
     }
