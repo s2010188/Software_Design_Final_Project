@@ -15,7 +15,7 @@ public class DashBoardPanel extends JPanel {
     private JPanel dashboardButtons;
     private JLabel totalLabel;
 
-    private HashMap<String, Double> bankTotals;
+    private HashMap<String, Double> bankTotals = new HashMap<>();
     private HashMap<String, JButton> bankButtons;
 
 
@@ -155,6 +155,7 @@ public class DashBoardPanel extends JPanel {
 
 
         bankButtons.put(bankName, newBtn);
+        bankName = bankName.trim().toLowerCase();
         bankTotals.put(bankName, balance);
 
         updateTotal();
@@ -164,6 +165,7 @@ public class DashBoardPanel extends JPanel {
 
     public void removeBankButton(String bankName){
 
+        bankName = bankName.trim().toLowerCase();
         JButton btn = bankButtons.get(bankName);
 
         if(btn != null){
@@ -179,8 +181,8 @@ public class DashBoardPanel extends JPanel {
 
     public void updateBank(String bank, double amount){
 
-        double currentAmount = bankTotals.getOrDefault(bank, 0.00);
-        bankTotals.put(bank, currentAmount + amount);
+        bank = bank.trim().toLowerCase();
+        bankTotals.put(bank, amount);
         updateTotal();
     }
 
@@ -196,4 +198,6 @@ public class DashBoardPanel extends JPanel {
 
         FirebaseService.updateGrandTotal(total);
     }
+
+
 }

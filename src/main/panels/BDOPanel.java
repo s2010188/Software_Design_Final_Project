@@ -318,4 +318,33 @@ public class BDOPanel extends JPanel {
         System.out.println("Uploading to Firebase...");
         FirebaseService.updateBank("bdo", total);
     }
+
+    public void setSavings(Double value){
+
+        if(value == null) return;
+
+        savings = value;
+        savingsLabel.setText("PHP " + savings);
+        updateTotal();
+    }
+
+    public void addLoadedSub(String name, Double amount){
+        if(name == null || amount == null) return;
+
+        subAmountsEL.add(amount);
+
+        JPanel row = createPanel(name);
+
+        JLabel amountLabel = new JLabel("PHP " + amount);
+
+        subLabelsEL.add(amountLabel);
+
+        row.add(amountLabel, BorderLayout.CENTER);
+
+        subContainerEL.add(row);
+    }
+
+    public void finalizeLoad(){
+        updateTotal();
+    }
 }
