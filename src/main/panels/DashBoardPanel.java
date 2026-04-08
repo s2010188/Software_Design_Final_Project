@@ -56,11 +56,7 @@ public class DashBoardPanel extends JPanel {
         dashboardButtons = new JPanel(new FlowLayout(FlowLayout.CENTER,15,10));
         dashboardButtons.setBackground(Color.WHITE);
 
-
-
         JButton addBtn = createAddButton();
-
-
 
         dashboardButtons.add(addBtn);
 
