@@ -51,21 +51,21 @@ public class MainFrame extends JFrame {
 
         dashboardPanel = new DashBoardPanel(this);
 
-        BDOPanel bdoPanel = new BDOPanel(this);
-        MayaPanel mayaPanel = new MayaPanel(this);
+//        BDOPanel bdoPanel = new BDOPanel(this);
+//        MayaPanel mayaPanel = new MayaPanel(this);
         AddBankPanel addBankPanel = new AddBankPanel(this);
         AboutPanel aboutPanel = new AboutPanel(this);
 
         panels.put("dashboard", dashboardPanel);
-        panels.put("bdo", bdoPanel);
-        panels.put("maya", mayaPanel);
+//        panels.put("bdo", bdoPanel);
+//        panels.put("maya", mayaPanel);
         panels.put("addbank", addBankPanel);
         panels.put("about", aboutPanel);
 
 
         mainContainer.add(dashboardPanel, "dashboard");
-        mainContainer.add(bdoPanel, "bdo");
-        mainContainer.add(mayaPanel, "maya");
+//        mainContainer.add(bdoPanel, "bdo");
+//        mainContainer.add(mayaPanel, "maya");
         mainContainer.add(addBankPanel, "addbank");
         mainContainer.add(aboutPanel, "about");
 
