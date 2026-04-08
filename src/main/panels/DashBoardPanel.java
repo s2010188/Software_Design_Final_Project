@@ -157,6 +157,7 @@ public class DashBoardPanel extends JPanel {
         bankButtons.put(key, newBtn);
         bankTotals.put(key, balance);
 
+
         updateTotal();
         revalidate();
         repaint();

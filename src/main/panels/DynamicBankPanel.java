@@ -29,6 +29,7 @@ public class DynamicBankPanel extends JPanel{
         this.BankName = BankName;
 
 
+
         if(logo != null){
             ImageIcon icon = new ImageIcon(logo);
             Image img = icon.getImage().getScaledInstance(70, 70, Image.SCALE_SMOOTH);
