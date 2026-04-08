@@ -167,6 +167,17 @@ public class AddBankPanel extends JPanel {
             return;
         }
 
+        //  ADD THIS CHECK
+        if (logo == null || logo.isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Please select a logo before adding the bank.",
+                    "Missing Logo",
+                    JOptionPane.WARNING_MESSAGE
+            );
+            return;
+        }
+
         mainFrame.addNewBank(bank, logo, false);
 
         // Reset fields
@@ -174,6 +185,12 @@ public class AddBankPanel extends JPanel {
         logoPreview.setIcon(null);
         logoPreview.setText("No Logo");
 
+        //  IMPORTANT RESET
+        logo = null;
+        selectedLogo = null;
+
         mainFrame.showPanel("dashboard");
     }
+
+
 }
