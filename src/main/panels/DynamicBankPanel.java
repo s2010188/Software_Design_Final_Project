@@ -21,6 +21,7 @@ public class DynamicBankPanel extends JPanel{
     private String BankName;
     private ImageIcon Logo;
     private String name;
+    private ArrayList<String> subNames = new ArrayList<>();
 
 
 
@@ -37,10 +38,6 @@ public class DynamicBankPanel extends JPanel{
         }else{
             this.Logo = null;
         }
-
-        FirebaseService.createBank(BankName, logo);
-
-
 
         setLayout(new BorderLayout());
         setBackground(new Color(240,240,240));
@@ -185,6 +182,21 @@ public class DynamicBankPanel extends JPanel{
         add(enhancedCardPanel,BorderLayout.CENTER);
     }
 
+    private boolean subAccountExists(String name) {
+        for (JLabel label : subLabels) {
+            if (label.getParent() != null) {
+                String panelTitle = ((javax.swing.border.TitledBorder)
+                       ((JPanel) label.getParent().getParent()).getBorder()
+                ).getTitle();
+
+                if (panelTitle.equalsIgnoreCase(name)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     private JPanel createPanel(String title){
 
         JPanel panel = new JPanel(new BorderLayout());
@@ -235,13 +247,38 @@ public class DynamicBankPanel extends JPanel{
     }
 
 
+    private boolean containsInvalidChars(String text) {
+        return text.matches(".*[.,/].*");
+    }
+
+
 
 
     private void addSubAccount(){
 
         String name = JOptionPane.showInputDialog("Sub Account Name");
 
-        if(name == null || name.isEmpty()){
+        if (name == null || name.trim().isEmpty()) {
+            return;
+        }
+
+        if (subNames.contains(name.toLowerCase())) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Sub account already exists!",
+                    "Duplicate Sub Account",
+                    JOptionPane.WARNING_MESSAGE
+            );
+            return;
+        }
+
+        if (containsInvalidChars(name)) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Special characters like , . / are not allowed.",
+                    "Invalid Name",
+                    JOptionPane.WARNING_MESSAGE
+            );
             return;
         }
 
@@ -267,6 +304,7 @@ public class DynamicBankPanel extends JPanel{
         }
         FirebaseService.updateSubAccount(BankName, name, amount);
         subAmounts.add(amount);
+        subNames.add(name.toLowerCase());
 
         JPanel row = createPanel(name);
         row.setBackground(new Color(245,245,245));
@@ -318,6 +356,7 @@ public class DynamicBankPanel extends JPanel{
             if(index >= 0){
                 subLabels.remove(index);
                 subAmounts.remove(index);
+                subNames.remove(name.toLowerCase());
             }
             subContainer.remove(row);
             subContainer.revalidate();
@@ -366,6 +405,8 @@ public class DynamicBankPanel extends JPanel{
     public void addLoadedSub(String name, Double amount){
 
         if(name == null || amount == null) return;
+
+        subNames.add(name.toLowerCase());
 
         subAmounts.add(amount);
 

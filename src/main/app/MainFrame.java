@@ -7,22 +7,17 @@ import main.services.FirebaseService;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 
-
 import javax.swing.*;
-
 import java.awt.*;
 import java.util.HashMap;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-
 public class MainFrame extends JFrame {
-
 
     public DashBoardPanel getDashboard() {
         return dashboardPanel;
     }
-
 
     private CardLayout cardLayout;
     private JPanel mainContainer;
@@ -34,7 +29,6 @@ public class MainFrame extends JFrame {
 
         FirebaseInitializer.initialize();
         FirebaseService.testConnection();
-
 
         setTitle("Bank System");
         setSize(900, 600);
@@ -49,12 +43,9 @@ public class MainFrame extends JFrame {
         cardLayout = new CardLayout();
         mainContainer = new JPanel(cardLayout);
 
-        panels = new HashMap<>();
-
         createHeader();
 
         dashboardPanel = new DashBoardPanel(this);
-
         AddBankPanel addBankPanel = new AddBankPanel(this);
         AboutPanel aboutPanel = new AboutPanel(this);
 
@@ -62,13 +53,11 @@ public class MainFrame extends JFrame {
         panels.put("addbank", addBankPanel);
         panels.put("about", aboutPanel);
 
-
         mainContainer.add(dashboardPanel, "dashboard");
         mainContainer.add(addBankPanel, "addbank");
         mainContainer.add(aboutPanel, "about");
 
         add(mainContainer, BorderLayout.CENTER);
-
 
         loadBanks();
 
@@ -94,13 +83,11 @@ public class MainFrame extends JFrame {
         name.setFont(new Font("Arial", Font.BOLD, 24));
         name.setForeground(Color.WHITE);
 
-
         leftPanel.add(welcome);
         leftPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         leftPanel.add(name);
 
-        JPanel rightPanel = new JPanel();
-        rightPanel.setLayout(new BorderLayout());
+        JPanel rightPanel = new JPanel(new BorderLayout());
         rightPanel.setOpaque(false);
 
         JPanel topRow = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 0));
@@ -152,85 +139,102 @@ public class MainFrame extends JFrame {
 
         JLabel dateLabel = new JLabel(date);
         dateLabel.setForeground(Color.WHITE);
-        dateLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
 
         rightPanel.add(topRow, BorderLayout.NORTH);
         rightPanel.add(dateLabel, BorderLayout.SOUTH);
 
-
         header.add(leftPanel, BorderLayout.WEST);
         header.add(rightPanel, BorderLayout.EAST);
 
-
         add(header, BorderLayout.NORTH);
-
     }
 
     public void showPanel(String name) {
         cardLayout.show(mainContainer, name);
     }
 
-
     public void updateDashboardTotal(String bank, double amount) {
         dashboardPanel.updateBank(bank, amount);
     }
 
 
-    public void addNewBank(String bankName, String logo) {
+    public void addNewBank(String bankName, String logo, boolean fromFirebase) {
 
+        // Check for duplicates ignoring case
+        if (bankExists(bankName)) {
+            if (!fromFirebase) {
+                JOptionPane.showMessageDialog(
+                        null,
+                        "Bank already exists!",
+                        "Duplicate Bank",
+                        JOptionPane.WARNING_MESSAGE
+                );
+            }
+            return;
+        }
 
-        DynamicBankPanel panel =
-                new DynamicBankPanel(this, bankName, logo);
-
-
-        panels.put(bankName, panel);
+        // Create bank panel and store using original case
+        DynamicBankPanel panel = new DynamicBankPanel(this, bankName, logo);
+        panels.put(bankName, panel); // store actual name
         mainContainer.add(panel, bankName);
-
 
         dashboardPanel.addBankButton(bankName, 0);
 
+        if (!fromFirebase) {
+            FirebaseService.createBank(bankName, logo);
+        }
 
         revalidate();
         repaint();
     }
 
-    public void removePanel(String bankName) {
 
+    public boolean bankExists(String bankName) {
+        for (String existingBank : panels.keySet()) {
+            // skip non-bank panels
+            if (existingBank.equalsIgnoreCase("dashboard") ||
+                    existingBank.equalsIgnoreCase("addbank") ||
+                    existingBank.equalsIgnoreCase("about")) continue;
+
+            if (existingBank.equalsIgnoreCase(bankName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void removePanel(String bankName) {
 
         JPanel panel = panels.get(bankName);
 
-
         if (panel != null) {
-
 
             mainContainer.remove(panel);
             panels.remove(bankName);
 
-
             dashboardPanel.removeBankButton(bankName);
 
-
             showPanel("dashboard");
-
 
             revalidate();
             repaint();
         }
     }
 
-    private void loadBanks(){
+    private void loadBanks() {
 
         FirebaseService.loadBanks(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
 
-                for(DataSnapshot bank : snapshot.getChildren()){
+                for (DataSnapshot bank : snapshot.getChildren()) {
 
                     String name = bank.getKey();
                     String logo = bank.child("logo").getValue(String.class);
 
-                    if(!panels.containsKey(name)){
-                        addNewBank(name, logo);
+
+                    if (!panels.containsKey(name)) {
+                        addNewBank(name, logo, true);
                     }
 
                     JPanel panel = panels.get(name);
@@ -239,41 +243,37 @@ public class MainFrame extends JFrame {
                     Object savingsObj = bank.child("savings").getValue();
                     double savings = 0;
 
-                    if(savingsObj != null){
-                        try{
+                    if (savingsObj != null) {
+                        try {
                             savings = Double.parseDouble(savingsObj.toString());
-                        }catch(Exception e){
+                        } catch (Exception e) {
                             savings = 0;
                         }
                     }
 
-                    if(panel instanceof DynamicBankPanel){
+                    if (panel instanceof DynamicBankPanel) {
                         ((DynamicBankPanel) panel).setSavings(savings);
                     }
-
 
                     // Load subaccounts
                     DataSnapshot subs = bank.child("subAccounts");
 
-                    if(subs.exists()){
-                        for(DataSnapshot sub : subs.getChildren()){
+                    if (subs.exists()) {
+                        for (DataSnapshot sub : subs.getChildren()) {
 
                             String subName = sub.getKey();
                             Double amount = sub.getValue(Double.class);
 
-                            if(panel instanceof DynamicBankPanel){
+                            if (panel instanceof DynamicBankPanel) {
                                 ((DynamicBankPanel) panel).addLoadedSub(subName, amount);
                             }
-
-
                         }
                     }
 
                     // finalize load
-                    if(panel instanceof DynamicBankPanel){
+                    if (panel instanceof DynamicBankPanel) {
                         ((DynamicBankPanel) panel).finalizeLoad();
                     }
-
                 }
             }
 
@@ -283,8 +283,6 @@ public class MainFrame extends JFrame {
             }
         });
     }
-
-
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new MainFrame());
