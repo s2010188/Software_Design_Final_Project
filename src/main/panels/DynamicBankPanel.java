@@ -284,30 +284,28 @@ public class DynamicBankPanel extends JPanel{
 
         edit.addActionListener(e->{
 
-            String input = JOptionPane.showInputDialog("Savings");
+            String input = JOptionPane.showInputDialog("Edit Amount");
 
-            if(input != null){
+            if (input != null) {
 
-                try{
+                double updated;
 
-                    double previous = savings;
-                    savings = Double.parseDouble(input);
+                try {
+                    updated = Double.parseDouble(input);
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(this, "Enter numbers only", "Invalid Input", JOptionPane.WARNING_MESSAGE);
 
-                    SLabel.setText("PHP " + savings);
-
-                    FirebaseService.updateSavings(BankName, previous, savings);
-
-                    updateTotal();
-
-                }catch(NumberFormatException ex){
-
-                    JOptionPane.showMessageDialog(
-                            this,
-                            "Enter numbers only",
-                            "Invalid Input",
-                            JOptionPane.WARNING_MESSAGE
-                    );
+                    return;
                 }
+
+                int index = subLabels.indexOf(amountLabel);
+                subAmounts.set(index, updated);
+
+                amountLabel.setText("PHP " + updated);
+
+                FirebaseService.updateSubAccount(BankName, name, updated);
+
+                updateTotal();
             }
 
 
@@ -372,16 +370,73 @@ public class DynamicBankPanel extends JPanel{
         subAmounts.add(amount);
 
         JPanel row = createPanel(name);
+        row.setBackground(new Color(245,245,245));
+        row.setMaximumSize(new Dimension(Integer.MAX_VALUE,55));
 
         JLabel amountLabel = new JLabel("PHP " + amount);
+        amountLabel.setFont(new Font("Arial",Font.BOLD,14));
 
         subLabels.add(amountLabel);
 
+        JButton edit = createEditButton();
+        JButton remove = createRemoveSubButton();
+
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT,5,0));
+        buttonPanel.setOpaque(false);
+
+        edit.addActionListener(e->{
+
+            String input = JOptionPane.showInputDialog("Edit Amount");
+
+            if (input != null) {
+
+                double updated;
+
+                try {
+                    updated = Double.parseDouble(input);
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(this, "Enter numbers only", "Invalid Input", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+
+                int index = subLabels.indexOf(amountLabel);
+                subAmounts.set(index, updated);
+
+                amountLabel.setText("PHP " + updated);
+
+                FirebaseService.updateSubAccount(BankName, name, updated);
+
+                updateTotal();
+            }
+
+        });
+
+        remove.addActionListener(e->{
+
+            int index = subLabels.indexOf(amountLabel);
+
+            if(index >= 0){
+                subLabels.remove(index);
+                subAmounts.remove(index);
+            }
+
+            subContainer.remove(row);
+            subContainer.revalidate();
+            subContainer.repaint();
+
+            FirebaseService.removeSubAccount(BankName, name);
+
+            updateTotal();
+        });
+
+        buttonPanel.add(edit);
+        buttonPanel.add(remove);
+
         row.add(amountLabel, BorderLayout.CENTER);
+        row.add(buttonPanel, BorderLayout.EAST);
 
         subContainer.add(row);
-
-
+        subContainer.add(Box.createVerticalStrut(5));
     }
 
     public void finalizeLoad(){
